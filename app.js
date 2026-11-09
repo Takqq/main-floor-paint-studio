@@ -463,7 +463,8 @@
       { id: 3, name: 'Stair Layer 2 (Handrail)', defaultZone: 2 },
       { id: 4, name: 'Door Header Bulkhead', defaultZone: 3 },
       { id: 5, name: 'Far-Back Living Wall', defaultZone: 3 },
-      { id: 6, name: 'Right Hallway Wall', defaultZone: 3 }
+      { id: 6, name: 'Right Hallway Wall', defaultZone: 3 },
+      { id: 7, name: 'Far-Right Doorway Wall', defaultZone: 3 }
     ],
     stairwell: [
       { id: 0, name: 'Upper Back Stairwell', defaultZone: 0 },
@@ -720,10 +721,18 @@
 
         if (room === 'hallway') {
           const cornerX = y < 48 ? 204 + (48 - y) * 1.9 : 200 + y * 0.076;
+          const rightDoorCornerX = 885 - (y - 325) * 0.1667;
           s0 = x < cornerX ? 0 : 1;
           s1 = 2;
           s2 = 3;
-          s3 = x < 625 && y < 410 ? 4 : x < 735 ? 5 : 6;
+          s3 =
+            x < 625 && y < 410
+              ? 4
+              : x < 735
+                ? 5
+                : x >= rightDoorCornerX && y < 430
+                  ? 7
+                  : 6;
         } else if (room === 'stairwell') {
           s0 = 0;
           s1 = 1;
@@ -772,9 +781,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=9`),
-            loadImage(`assets/${room}_mask.png?v=9`),
-            loadImage(`assets/${room}_orig.jpg?v=9`)
+            loadImage(`assets/${room}_base.jpg?v=10`),
+            loadImage(`assets/${room}_mask.png?v=10`),
+            loadImage(`assets/${room}_orig.jpg?v=10`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
