@@ -735,7 +735,7 @@
                   ? 7
                   : 6;
         } else if (room === 'stairwell') {
-          const rightDoorCornerX = 865 + (y - 510) * 0.06415;
+          const rightDoorCornerX = 874 + (y - 510) * 0.035;
           s0 = 0;
           s1 = 1;
           s2 = 2;
@@ -770,6 +770,13 @@
           else if (maxM === m1) topSeg[p] = s1;
           else topSeg[p] = s0;
         }
+
+        // Expand click/hover hitbox on the narrow far-right doorway strip so edge clicks always register
+        if (room === 'stairwell' && x >= 868 && y >= 488 && y <= 635) {
+          topSeg[p] = 6;
+        } else if (room === 'hallway' && x >= 866 && y >= 312 && y <= 460) {
+          topSeg[p] = 7;
+        }
       }
     }
 
@@ -783,9 +790,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=11`),
-            loadImage(`assets/${room}_mask.png?v=11`),
-            loadImage(`assets/${room}_orig.jpg?v=11`)
+            loadImage(`assets/${room}_base.jpg?v=12`),
+            loadImage(`assets/${room}_mask.png?v=12`),
+            loadImage(`assets/${room}_orig.jpg?v=12`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
