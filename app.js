@@ -494,9 +494,10 @@
       { id: 1, name: 'Upper Kitchen Cabinet Wall', defaultZone: 3 },
       { id: 2, name: 'Far-Left Hallway Wall', defaultZone: 3 },
       { id: 3, name: 'Far Front Door Wall', defaultZone: 3 },
-      { id: 4, name: 'Stairwell Return Bulkhead', defaultZone: 2 },
+      { id: 4, name: 'Stairwell Return Bulkhead', defaultZone: 3 },
       { id: 5, name: 'Center Fireplace & Art Wall', defaultZone: 3 },
-      { id: 6, name: 'Right Living Room Wall', defaultZone: 3 }
+      { id: 6, name: 'Right Living Room Wall', defaultZone: 3 },
+      { id: 7, name: 'Far Stairwell Opening Wall', defaultZone: 1 }
     ]
   };
 
@@ -740,9 +741,9 @@
           s0 = 4;
           s2 = 5;
         } else if (room === 'fireplace') {
-          s2 = x < 128 ? 0 : 1;
+          s2 = x < 128 ? 0 : x < 440 ? 1 : 7;
           s0 = x < 480 ? 2 : 3;
-          s3 = x < 609 ? 4 : 5;
+          s3 = x < 611 ? 4 : 5;
           s1 = 6;
         }
 
@@ -771,9 +772,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=8`),
-            loadImage(`assets/${room}_mask.png?v=8`),
-            loadImage(`assets/${room}_orig.jpg?v=8`)
+            loadImage(`assets/${room}_base.jpg?v=9`),
+            loadImage(`assets/${room}_mask.png?v=9`),
+            loadImage(`assets/${room}_orig.jpg?v=9`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
