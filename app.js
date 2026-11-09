@@ -119,6 +119,79 @@
     }
   ];
 
+  // Official BeautiTone (Home Hardware) Paint Catalog for Two-Way Conversion & Color Wheel Pins
+  const BEAUTITONE_CATALOG = [
+    // Pale & Muted Greens / Sages
+    { name: 'Pale Green Tea', code: 'C45-7-0425-0', hex: '#E2E2D0', family: 'Green & Sage' },
+    { name: 'Translucent Vision', code: 'C42-7-0404-0', hex: '#E3E4CE', family: 'Green & Sage' },
+    { name: 'Essence of Sage', code: 'TR27-5-1', hex: '#DCE0CE', family: 'Green & Sage' },
+    { name: 'Hook And Line', code: 'C40-6-0412-0', hex: '#EFEEE1', family: 'Green & Sage' },
+    { name: 'Garden Seat', code: 'C25-7-0789-0', hex: '#EAE6C6', family: 'Green & Sage' },
+    { name: 'Le Printemps', code: 'C27-7-1553-0', hex: '#E9E4C9', family: 'Green & Sage' },
+    { name: 'Forest Found', code: 'C25-6-0790-0', hex: '#DFDEB9', family: 'Green & Sage' },
+    { name: 'Origin', code: 'C25-5-0791-0', hex: '#D6D3A5', family: 'Green & Sage' },
+    { name: 'Sawgrass Cottage', code: 'C41-5-0399-0', hex: '#D4CDA1', family: 'Green & Sage' },
+    { name: 'Just Beautiful', code: 'C27-5-1551-0', hex: '#CCC794', family: 'Green & Sage' },
+    { name: 'Footie Pajamas', code: 'C25-4-0792-4', hex: '#C9C387', family: 'Green & Sage' },
+    { name: 'Peppermint Twist', code: 'C34-6-1566-0', hex: '#C3DAC5', family: 'Green & Sage' },
+    { name: 'Billy Boy', code: 'B14-01', hex: '#C8DED2', family: 'Green & Sage' },
+    { name: 'Arbor Vitae', code: 'C45-5-0427-0', hex: '#B9BFA7', family: 'Green & Sage' },
+    { name: 'Green Glass', code: 'C43-3-0751-0', hex: '#ACB890', family: 'Green & Sage' },
+    { name: 'Keewatin', code: 'CC058-0', hex: '#A7C4B8', family: 'Green & Sage' },
+    { name: 'French Mint', code: 'C34-4-1564-0', hex: '#95B397', family: 'Green & Sage' },
+    // Mid & Deep Olives / Forest Greens
+    { name: 'Cactus Valley', code: 'C43-2-0752-3', hex: '#889567', family: 'Olive & Forest' },
+    { name: 'Motherland', code: 'C25-3-0793-4', hex: '#BBB463', family: 'Olive & Forest' },
+    { name: 'Samantha Jade', code: 'C26-4-1543-4', hex: '#BEA864', family: 'Olive & Forest' },
+    { name: 'The Goods', code: 'C25-2-0794-3', hex: '#A9A450', family: 'Olive & Forest' },
+    { name: 'Olive You', code: 'C25-1-0795-3', hex: '#8C8C3C', family: 'Olive & Forest' },
+    { name: 'Tropical Twist', code: 'C41-1-0403-3', hex: '#827643', family: 'Olive & Forest' },
+    { name: 'Vegetarian', code: 'C45-2-0430-3', hex: '#797F63', family: 'Olive & Forest' },
+    { name: 'Four Leaf Clover', code: 'C34-3-1563-4', hex: '#668A68', family: 'Olive & Forest' },
+    { name: 'Old School', code: 'C42-1-0410-3', hex: '#686843', family: 'Olive & Forest' },
+    { name: 'Hosta La Vista', code: 'C27-1-1547-3', hex: '#626231', family: 'Olive & Forest' },
+    { name: 'Clover Patch', code: 'C45-1-0431-3', hex: '#575B45', family: 'Olive & Forest' },
+    { name: 'Monogram', code: 'D31-1-0424-3', hex: '#585546', family: 'Olive & Forest' },
+    { name: 'Muse', code: 'TR26-4-3', hex: '#495445', family: 'Olive & Forest' },
+    { name: 'Pendula Garden', code: 'C45-3-0429-4', hex: '#474A3C', family: 'Olive & Forest' },
+    { name: 'Mardi Grass', code: 'C34-2-1562-3', hex: '#4C7451', family: 'Olive & Forest' },
+    { name: 'Botanical', code: 'TR27-10-3', hex: '#354A39', family: 'Olive & Forest' },
+    { name: 'On The Greens', code: 'C34-1-1561-3', hex: '#1F5238', family: 'Olive & Forest' },
+    // Creams, Yellows & Warm Whites
+    { name: 'Pale Narcissus', code: 'B33-7-0957-0', hex: '#FAF4E0', family: 'Cream & Yellow' },
+    { name: 'Soft Alabaster', code: 'TR27-1-1', hex: '#F6F3EB', family: 'Cream & Yellow' },
+    { name: 'Chickadee', code: 'KC8-1', hex: '#F5E9D2', family: 'Cream & Yellow' },
+    { name: 'Overnight Oats', code: 'TR27-3-1', hex: '#F1E6D4', family: 'Cream & Yellow' },
+    { name: 'Autumn Child', code: 'B14-6-0909-0', hex: '#FBE7C0', family: 'Cream & Yellow' },
+    { name: 'Illumina', code: 'TR24-3-1', hex: '#F5DFA5', family: 'Cream & Yellow' },
+    { name: 'Ecru', code: 'WB078-1', hex: '#EDE8DD', family: 'Cream & Yellow' },
+    { name: 'Enchanting', code: 'WB076-1', hex: '#EEE4D7', family: 'Cream & Yellow' },
+    { name: 'Soaking Up The Rays', code: 'DR97-1', hex: '#E9DFD0', family: 'Cream & Yellow' },
+    // Stone, Greige, Taupe & Earth Neutrals
+    { name: 'Turkish Tower', code: 'D34-7-0579-0', hex: '#D9D8D1', family: 'Stone & Neutral' },
+    { name: 'Power Lunch', code: 'D30-7-0572-0', hex: '#D4D1C6', family: 'Stone & Neutral' },
+    { name: 'Kingsway', code: 'FD089-0', hex: '#C6BFAF', family: 'Stone & Neutral' },
+    { name: 'Greystoke', code: 'D30-4-0575-4', hex: '#87857C', family: 'Stone & Neutral' },
+    { name: 'Onyx', code: 'CC070-3', hex: '#7F7E77', family: 'Stone & Neutral' },
+    { name: 'King Kole', code: 'D30-3-0576-4', hex: '#757267', family: 'Stone & Neutral' },
+    { name: 'Moss Glen', code: 'CC071-3', hex: '#504D48', family: 'Stone & Neutral' },
+    { name: 'Brown Suede', code: 'C16-1-0541-3', hex: '#594D3F', family: 'Stone & Neutral' },
+    { name: 'Ancient Strata', code: 'TR27-11-3', hex: '#4B3E35', family: 'Stone & Neutral' },
+    // Blues, Slates & Terracottas
+    { name: 'North Beach Blue', code: 'CC052-2', hex: '#859C9C', family: 'Blue & Accent' },
+    { name: 'Winter Harbour', code: 'CC047-4', hex: '#5F727D', family: 'Blue & Accent' },
+    { name: 'Prince George', code: 'B22-1-0480-3', hex: '#314159', family: 'Blue & Accent' },
+    { name: 'Blue Period', code: 'B26-1-0620-3', hex: '#025154', family: 'Blue & Accent' },
+    { name: 'Purple Vision', code: 'A30-4-1254-0', hex: '#A09BC6', family: 'Blue & Accent' },
+    { name: 'Muted Mulberry', code: 'CC035-3', hex: '#67626E', family: 'Blue & Accent' },
+    { name: 'Rosewater', code: 'TR27-2-1', hex: '#F3DFD8', family: 'Blue & Accent' },
+    { name: 'Tartlet', code: 'A18-7-1090-0', hex: '#FADEDA', family: 'Blue & Accent' },
+    { name: 'Wood Nymph', code: 'A18-4-1093-0', hex: '#EAA0A8', family: 'Blue & Accent' },
+    { name: 'Porcelain Rose', code: 'A18-3-1094-4', hex: '#D78188', family: 'Blue & Accent' },
+    { name: 'Empower', code: 'A18-2-1095-3', hex: '#AD4646', family: 'Blue & Accent' },
+    { name: 'Midnight Flora', code: 'TR25-3-3', hex: '#43293E', family: 'Blue & Accent' }
+  ];
+
   const WHOLE_ROOM_COMBOS = [
     {
       label: 'Winner Trio: Frittata + Grounded + Positive Energy',
@@ -152,36 +225,6 @@
     'Stair Layer 2 (Handrail Wall)',
     'Main Floor & Hallway Walls'
   ];
-
-  const state = {
-    activeRoom: 'hallway',
-    activeZone: 3,
-    linkStairLayers: true,
-    unlinkLiving: false,
-    showOriginal: false,
-    customFavourites: [],
-    zoneColors: [
-      { ...TESTED_SWATCHES[0] },   // Zone 0: Frittata
-      { ...DEFAULT_FAVOURITES[0] }, // Zone 1: Grounded
-      { ...DEFAULT_FAVOURITES[0] }, // Zone 2: Grounded
-      { ...DEFAULT_FAVOURITES[1] }  // Zone 3: Positive Energy
-    ],
-    wheelHSL: { h: 63, s: 27, l: 85 },
-    roomAssets: {}
-  };
-
-  // Load saved custom favourites from localStorage
-  try {
-    const saved = localStorage.getItem('paint_studio_custom_favs');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
-        state.customFavourites = parsed;
-      }
-    }
-  } catch (err) {
-    // Ignore storage restriction
-  }
 
   // Color Conversion Helpers
   function hexToRgb(hex) {
@@ -267,6 +310,93 @@
     };
   }
 
+  // Perceptual CIE L*a*b* Conversion for Accurate Paint Matching
+  function rgbToLab(r, g, b) {
+    const lin = (c) => {
+      const s = c / 255;
+      return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    };
+    const rl = lin(r);
+    const gl = lin(g);
+    const bl = lin(b);
+
+    const x = (rl * 0.4124 + gl * 0.3576 + bl * 0.1805) / 0.95047;
+    const y = (rl * 0.2126 + gl * 0.7152 + bl * 0.0722) / 1.00000;
+    const z = (rl * 0.0193 + gl * 0.1192 + bl * 0.9505) / 1.08883;
+
+    const f = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
+    const fx = f(x);
+    const fy = f(y);
+    const fz = f(z);
+
+    return {
+      L: 116 * fy - 16,
+      a: 500 * (fx - fy),
+      b: 200 * (fy - fz)
+    };
+  }
+
+  function deltaE(lab1, lab2) {
+    const dL = lab1.L - lab2.L;
+    const da = lab1.a - lab2.a;
+    const db = lab1.b - lab2.b;
+    return Math.sqrt(dL * dL + da * da + db * db);
+  }
+
+  // Enrich BEAUTITONE_CATALOG with precomputed RGB, LRV, HSL, and Lab
+  BEAUTITONE_CATALOG.forEach((item) => {
+    item.hex = item.hex.toUpperCase();
+    item.rgb = hexToRgb(item.hex);
+    item.lrv = computeLRV(item.rgb.r, item.rgb.g, item.rgb.b);
+    item.hsl = rgbToHsl(item.rgb.r, item.rgb.g, item.rgb.b);
+    item.lab = rgbToLab(item.rgb.r, item.rgb.g, item.rgb.b);
+    item.brand = 'BeautiTone';
+    item.id = 'bt-' + item.code.toLowerCase();
+  });
+
+  function findClosestBeautiToneColors(hex, count = 3) {
+    const rgb = hexToRgb(hex);
+    const targetLab = rgbToLab(rgb.r, rgb.g, rgb.b);
+    const scored = BEAUTITONE_CATALOG.map((bt) => {
+      const dist = deltaE(targetLab, bt.lab);
+      const similarity = Math.max(0, Math.min(100, Math.round(100 - dist * 1.6)));
+      return { bt, dist, similarity };
+    });
+    scored.sort((a, b) => a.dist - b.dist);
+    return scored.slice(0, count);
+  }
+
+  const state = {
+    activeRoom: 'hallway',
+    activeZone: 3,
+    linkStairLayers: true,
+    unlinkLiving: false,
+    showOriginal: false,
+    showBtPins: true,
+    selectedBtLookup: BEAUTITONE_CATALOG[0],
+    customFavourites: [],
+    zoneColors: [
+      { ...TESTED_SWATCHES[0] },   // Zone 0: Frittata
+      { ...DEFAULT_FAVOURITES[0] }, // Zone 1: Grounded
+      { ...DEFAULT_FAVOURITES[0] }, // Zone 2: Grounded
+      { ...DEFAULT_FAVOURITES[1] }  // Zone 3: Positive Energy
+    ],
+    wheelHSL: { h: 63, s: 27, l: 85 },
+    roomAssets: {}
+  };
+
+  try {
+    const saved = localStorage.getItem('paint_studio_custom_favs');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        state.customFavourites = parsed;
+      }
+    }
+  } catch (err) {
+    // Ignore storage error
+  }
+
   // Image Asset Loader
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -319,7 +449,7 @@
     }
   }
 
-  // Real-Time Pixel Shader for Room Re-Coloring
+  // Real-Time Pixel Shader
   function renderRoomToCanvas(roomKey, targetCanvas) {
     const asset = state.roomAssets[roomKey];
     if (!asset) return;
@@ -342,7 +472,6 @@
     const c2 = hexToRgb(state.zoneColors[2].hex);
     const c3 = hexToRgb(state.zoneColors[3].hex);
 
-    // In Living Room view, unless unlinked, all walls use Main Floor (c3)
     const isLivingLinked = roomKey === 'living' && !state.unlinkLiving;
     const z1 = isLivingLinked ? c3 : c1;
     const z2 = isLivingLinked ? c3 : c2;
@@ -355,7 +484,6 @@
       const mg = maskPixels[i + 1];
       const mb = maskPixels[i + 2];
 
-      // Fast skip for non-wall pixels
       if ((mr | mg | mb) === 0) {
         out[i] = basePixels[i];
         out[i + 1] = basePixels[i + 1];
@@ -364,11 +492,6 @@
         continue;
       }
 
-      // Decode 4 wall zone weights from RGB mask:
-      // m3 = min(R, B) (Main Floor)
-      // m0 = R - m3 (Back Stairwell)
-      // m1 = G (Layer 1)
-      // m2 = B - m3 (Layer 2)
       const m3 = mr < mb ? mr : mb;
       const m0 = mr - m3;
       const m1 = mg;
@@ -388,7 +511,6 @@
       const tg = (m0 * c0.g + m1 * z1.g + m2 * z2.g + m3 * c3.g) * invTotal;
       const tb = (m0 * c0.b + m1 * z1.b + m2 * z2.b + m3 * c3.b) * invTotal;
 
-      // Normalized illumination stored at neutral_gray = illum * 195.0
       const illum = basePixels[i] / 195.0;
       let pr, pg, pb;
       if (illum <= 1.0) {
@@ -441,7 +563,6 @@
     updateRecipeAndZoneUI();
   }
 
-  // Update UI Chips, Zone Buttons, and Selected Swatch Cards
   function updateRecipeAndZoneUI() {
     for (let z = 0; z < 4; z++) {
       const col = state.zoneColors[z];
@@ -480,7 +601,6 @@
     const z = state.activeZone;
     state.zoneColors[z] = { ...colorObj };
 
-    // If First 2 Stair Layers are linked and user is editing Layer 1 or Layer 2, update both
     if (state.linkStairLayers && (z === 1 || z === 2)) {
       state.zoneColors[1] = { ...colorObj };
       state.zoneColors[2] = { ...colorObj };
@@ -490,6 +610,8 @@
       const rgb = hexToRgb(colorObj.hex);
       state.wheelHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
       updateWheelUI();
+    } else {
+      renderClosestBeautiToneMatches(colorObj.hex);
     }
 
     renderActiveRoom();
@@ -504,7 +626,6 @@
     updateRecipeAndZoneUI();
   }
 
-  // Render Swatch Grids
   function createSwatchCard(swatch) {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -585,7 +706,7 @@
     });
   }
 
-  // Interactive 2D Color Wheel
+  // Interactive 2D Color Wheel + BeautiTone Sample Dots
   const wheelCanvas = document.getElementById('color-wheel-canvas');
   const wheelCtx = wheelCanvas.getContext('2d');
   const wheelCursor = document.getElementById('wheel-cursor');
@@ -594,8 +715,6 @@
   const inputHex = document.getElementById('input-hex');
   const inputNativeColor = document.getElementById('input-native-color');
   const hexErrorMsg = document.getElementById('hex-error-msg');
-
-  let wheelBaseImage = null;
 
   function drawColorWheel(lightness) {
     const size = wheelCanvas.width;
@@ -625,7 +744,203 @@
       }
     }
     wheelCtx.putImageData(imgData, 0, 0);
-    wheelBaseImage = imgData;
+
+    // Plot BeautiTone sample dots on the wheel if enabled
+    if (state.showBtPins) {
+      BEAUTITONE_CATALOG.forEach((bt) => {
+        const rad = (bt.hsl.h * Math.PI) / 180;
+        const dist = (bt.hsl.s / 100) * (radius - 6);
+        const px = radius + Math.cos(rad) * dist;
+        const py = radius + Math.sin(rad) * dist;
+
+        const isNearLightness = Math.abs(bt.hsl.l - lightness) <= 18;
+        wheelCtx.beginPath();
+        wheelCtx.arc(px, py, isNearLightness ? 4.2 : 2.6, 0, Math.PI * 2);
+        wheelCtx.fillStyle = bt.hex;
+        wheelCtx.fill();
+        wheelCtx.lineWidth = isNearLightness ? 1.5 : 1;
+        wheelCtx.strokeStyle = isNearLightness ? '#1B1A17' : 'rgba(27, 26, 23, 0.45)';
+        wheelCtx.stroke();
+      });
+    }
+  }
+
+  // Render Top 3 Closest BeautiTone Matches (Color -> BeautiTone)
+  function renderClosestBeautiToneMatches(hex) {
+    const container = document.getElementById('bt-closest-list');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const closest = findClosestBeautiToneColors(hex, 3);
+    closest.forEach(({ bt, dist, similarity }) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bt-match-card' + (dist < 1.5 ? ' exact' : '');
+      btn.setAttribute('role', 'listitem');
+
+      const topRow = document.createElement('div');
+      topRow.className = 'bt-match-top';
+
+      const sw = document.createElement('span');
+      sw.className = 'bt-match-swatch';
+      sw.style.backgroundColor = bt.hex;
+
+      const badge = document.createElement('span');
+      badge.className = 'bt-match-badge';
+      badge.textContent = dist < 1.2 ? 'Exact Match' : `${similarity}% Match`;
+
+      topRow.appendChild(sw);
+      topRow.appendChild(badge);
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'bt-match-name';
+      nameEl.textContent = bt.name;
+
+      const codeEl = document.createElement('span');
+      codeEl.className = 'bt-match-code';
+      codeEl.textContent = `${bt.code} | ${bt.hex}`;
+
+      btn.appendChild(topRow);
+      btn.appendChild(nameEl);
+      btn.appendChild(codeEl);
+
+      btn.addEventListener('click', () => {
+        state.selectedBtLookup = bt;
+        renderBtLookupResult(bt);
+        applyColorToActiveZone(bt, true);
+      });
+
+      container.appendChild(btn);
+    });
+  }
+
+  // Direction B: BeautiTone Catalog Lookup -> HEX Code & Apply
+  const inputBtSearch = document.getElementById('input-bt-search');
+  const selectBtCatalog = document.getElementById('select-bt-catalog');
+  const btConversionResult = document.getElementById('bt-conversion-result');
+
+  function populateBtDropdown(filterQuery = '') {
+    const q = filterQuery.trim().toLowerCase();
+    const filtered = BEAUTITONE_CATALOG.filter(
+      (bt) =>
+        !q ||
+        bt.name.toLowerCase().includes(q) ||
+        bt.code.toLowerCase().includes(q) ||
+        bt.hex.toLowerCase().includes(q) ||
+        bt.family.toLowerCase().includes(q)
+    );
+
+    selectBtCatalog.innerHTML = '';
+    if (filtered.length === 0) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = 'No matching BeautiTone color found';
+      selectBtCatalog.appendChild(opt);
+      return;
+    }
+
+    filtered.forEach((bt) => {
+      const opt = document.createElement('option');
+      opt.value = bt.code;
+      opt.textContent = `${bt.name} (${bt.code}) -> ${bt.hex}`;
+      if (state.selectedBtLookup && state.selectedBtLookup.code === bt.code) {
+        opt.selected = true;
+      }
+      selectBtCatalog.appendChild(opt);
+    });
+
+    if (!filtered.some((b) => state.selectedBtLookup && b.code === state.selectedBtLookup.code)) {
+      state.selectedBtLookup = filtered[0];
+    }
+    renderBtLookupResult(state.selectedBtLookup);
+  }
+
+  function renderBtLookupResult(bt) {
+    if (!bt || !btConversionResult) return;
+    btConversionResult.innerHTML = '';
+
+    document.getElementById('bt-converted-readout').textContent =
+      `${bt.code} = ${bt.hex} (LRV ${bt.lrv})`;
+
+    const left = document.createElement('div');
+    left.className = 'bt-result-left';
+
+    const sw = document.createElement('span');
+    sw.className = 'bt-result-swatch';
+    sw.style.backgroundColor = bt.hex;
+
+    const meta = document.createElement('div');
+    meta.className = 'bt-result-meta';
+
+    const title = document.createElement('span');
+    title.className = 'bt-result-title';
+    title.textContent = `BeautiTone ${bt.name} (${bt.code})`;
+
+    const specs = document.createElement('span');
+    specs.className = 'bt-result-specs';
+    specs.textContent = `HEX: ${bt.hex} | RGB: (${bt.rgb.r}, ${bt.rgb.g}, ${bt.rgb.b}) | LRV: ${bt.lrv}`;
+
+    meta.appendChild(title);
+    meta.appendChild(specs);
+    left.appendChild(sw);
+    left.appendChild(meta);
+
+    const actions = document.createElement('div');
+    actions.className = 'bt-result-actions';
+
+    const applyBtn = document.createElement('button');
+    applyBtn.type = 'button';
+    applyBtn.className = 'btn btn-primary btn-compact';
+    applyBtn.textContent = 'Apply to Wall';
+    applyBtn.addEventListener('click', () => {
+      applyColorToActiveZone(bt, true);
+    });
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'btn btn-secondary btn-compact';
+    copyBtn.textContent = `Copy ${bt.hex}`;
+    copyBtn.addEventListener('click', () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(bt.hex);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = `Copy ${bt.hex}`;
+        }, 1400);
+      }
+    });
+
+    actions.appendChild(applyBtn);
+    actions.appendChild(copyBtn);
+
+    btConversionResult.appendChild(left);
+    btConversionResult.appendChild(actions);
+  }
+
+  if (inputBtSearch) {
+    inputBtSearch.addEventListener('input', () => {
+      populateBtDropdown(inputBtSearch.value);
+    });
+  }
+
+  if (selectBtCatalog) {
+    selectBtCatalog.addEventListener('change', () => {
+      const code = selectBtCatalog.value;
+      const found = BEAUTITONE_CATALOG.find((b) => b.code === code);
+      if (found) {
+        state.selectedBtLookup = found;
+        renderBtLookupResult(found);
+        applyColorToActiveZone(found, true);
+      }
+    });
+  }
+
+  const chkBtPins = document.getElementById('chk-show-bt-pins');
+  if (chkBtPins) {
+    chkBtPins.addEventListener('change', (e) => {
+      state.showBtPins = e.target.checked;
+      drawColorWheel(state.wheelHSL.l);
+    });
   }
 
   function updateWheelUI() {
@@ -655,6 +970,8 @@
     document.getElementById('lightness-val-label').textContent = `${l}% (LRV ${lrv})`;
     document.getElementById('saturation-val-label').textContent = `${s}%`;
     document.getElementById('wheel-live-readout').textContent = `${hex} | LRV ${lrv}`;
+
+    renderClosestBeautiToneMatches(hex);
   }
 
   function applyCurrentWheelColor() {
@@ -677,11 +994,41 @@
     );
   }
 
-  function handleWheelPointer(clientX, clientY) {
+  function handleWheelPointer(clientX, clientY, allowPinSnap = false) {
     const rect = wheelCanvas.getBoundingClientRect();
     const radius = rect.width / 2;
     const dx = clientX - (rect.left + radius);
     const dy = clientY - (rect.top + radius);
+
+    // If BeautiTone dots are visible and user clicked directly on a dot, snap to that BeautiTone sample!
+    if (allowPinSnap && state.showBtPins) {
+      const scale = wheelCanvas.width / rect.width;
+      const clickX = (clientX - rect.left) * scale;
+      const clickY = (clientY - rect.top) * scale;
+      const canvasRadius = wheelCanvas.width / 2;
+
+      let bestPin = null;
+      let bestDist = 7.5;
+      BEAUTITONE_CATALOG.forEach((bt) => {
+        const rad = (bt.hsl.h * Math.PI) / 180;
+        const d = (bt.hsl.s / 100) * (canvasRadius - 6);
+        const px = canvasRadius + Math.cos(rad) * d;
+        const py = canvasRadius + Math.sin(rad) * d;
+        const pinDist = Math.hypot(clickX - px, clickY - py);
+        if (pinDist < bestDist) {
+          bestDist = pinDist;
+          bestPin = bt;
+        }
+      });
+
+      if (bestPin) {
+        state.selectedBtLookup = bestPin;
+        renderBtLookupResult(bestPin);
+        applyColorToActiveZone(bestPin, true);
+        return;
+      }
+    }
+
     const dist = Math.min(radius, Math.sqrt(dx * dx + dy * dy));
     const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
 
@@ -694,17 +1041,16 @@
   wheelCanvas.addEventListener('pointerdown', (e) => {
     isDraggingWheel = true;
     wheelCanvas.setPointerCapture(e.pointerId);
-    handleWheelPointer(e.clientX, e.clientY);
+    handleWheelPointer(e.clientX, e.clientY, true);
   });
   wheelCanvas.addEventListener('pointermove', (e) => {
     if (!isDraggingWheel) return;
-    handleWheelPointer(e.clientX, e.clientY);
+    handleWheelPointer(e.clientX, e.clientY, false);
   });
   wheelCanvas.addEventListener('pointerup', () => {
     isDraggingWheel = false;
   });
 
-  // Keyboard navigation on Color Wheel (R-32)
   wheelCanvas.addEventListener('keydown', (e) => {
     let handled = true;
     if (e.key === 'ArrowRight') state.wheelHSL.h = (state.wheelHSL.h + 5) % 360;
@@ -831,7 +1177,6 @@
     }
   });
 
-  // Room Tab Switching & Controls
   document.querySelectorAll('.room-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       state.activeRoom = tab.dataset.room;
@@ -930,6 +1275,7 @@
   });
 
   // Initialize Studio
+  populateBtDropdown('');
   renderSwatchShelves();
   renderWholeRoomCombos();
   setActiveZone(3);
