@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
   <a href="#main-workspace" class="skip-link">Skip to paint visualizer</a>
@@ -54,8 +54,11 @@
           <button type="button" role="tab" aria-selected="false" data-room="entryway" class="room-tab">
             4. Front Entryway
           </button>
+          <button type="button" role="tab" aria-selected="false" data-room="fireplace" class="room-tab">
+            5. Kitchen &amp; Fireplace
+          </button>
           <button type="button" role="tab" aria-selected="false" data-room="all" class="room-tab">
-            All 4 Views
+            All 5 Views
           </button>
         </div>
 
@@ -110,6 +113,13 @@
           </div>
           <canvas id="multi-canvas-entryway"></canvas>
         </div>
+        <div class="multi-card">
+          <div class="multi-card-header">
+            <span>5. Kitchen &amp; Fireplace</span>
+            <button type="button" class="btn-link" data-jump-room="fireplace">Expand</button>
+          </div>
+          <canvas id="multi-canvas-fireplace"></canvas>
+        </div>
       </div>
 
       <!-- Active Palette Summary Strip Below Canvas -->
@@ -151,10 +161,10 @@
         </div>
       </div>
 
-      <!-- Saved Layouts Studio Panel (Saves All 24 Individual Walls Across All 4 Photos) -->
+      <!-- Saved Layouts Studio Panel (Saves All Individual Walls Across All 5 Photos) -->
       <div class="saved-layouts-panel" aria-label="Saved Wall Layouts">
         <div class="bt-box-header">
-          <strong>Saved Layouts (All 4 Photos &amp; Individual Walls)</strong>
+          <strong>Saved Layouts (All 5 Photos &amp; Individual Walls)</strong>
           <span class="card-hint" id="saved-layout-status">Changes auto-save live | Save named layouts to compare</span>
         </div>
 
@@ -399,6 +409,6 @@
     </aside>
   </main>
 
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>

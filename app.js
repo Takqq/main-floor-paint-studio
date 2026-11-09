@@ -488,6 +488,15 @@
       { id: 3, name: 'Stair Layer 1 (Mirror Wall)', defaultZone: 1 },
       { id: 4, name: 'Back Stairwell Window Wall', defaultZone: 0 },
       { id: 5, name: 'Stair Layer 2 (Handrail)', defaultZone: 2 }
+    ],
+    fireplace: [
+      { id: 0, name: 'Left Fridge Wall', defaultZone: 3 },
+      { id: 1, name: 'Upper Kitchen Cabinet Wall', defaultZone: 3 },
+      { id: 2, name: 'Far-Left Hallway Wall', defaultZone: 3 },
+      { id: 3, name: 'Far Front Door Wall', defaultZone: 3 },
+      { id: 4, name: 'Stairwell Return Bulkhead', defaultZone: 2 },
+      { id: 5, name: 'Center Fireplace & Art Wall', defaultZone: 3 },
+      { id: 6, name: 'Right Living Room Wall', defaultZone: 3 }
     ]
   };
 
@@ -730,6 +739,11 @@
           s1 = 3;
           s0 = 4;
           s2 = 5;
+        } else if (room === 'fireplace') {
+          s2 = x < 128 ? 0 : 1;
+          s0 = x < 480 ? 2 : 3;
+          s3 = x < 609 ? 4 : 5;
+          s1 = 6;
         }
 
         m0Seg[p] = s0;
@@ -751,15 +765,15 @@
   }
 
   async function loadAllRoomAssets() {
-    const rooms = ['hallway', 'stairwell', 'living', 'entryway'];
+    const rooms = ['hallway', 'stairwell', 'living', 'entryway', 'fireplace'];
     const statusEl = document.getElementById('canvas-status');
     try {
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=7`),
-            loadImage(`assets/${room}_mask.png?v=7`),
-            loadImage(`assets/${room}_orig.jpg?v=7`)
+            loadImage(`assets/${room}_base.jpg?v=8`),
+            loadImage(`assets/${room}_mask.png?v=8`),
+            loadImage(`assets/${room}_orig.jpg?v=8`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
@@ -895,6 +909,7 @@
       renderRoomToCanvas('stairwell', document.getElementById('multi-canvas-stairwell'));
       renderRoomToCanvas('living', document.getElementById('multi-canvas-living'));
       renderRoomToCanvas('entryway', document.getElementById('multi-canvas-entryway'));
+      renderRoomToCanvas('fireplace', document.getElementById('multi-canvas-fireplace'));
     } else {
       singleWrap.hidden = false;
       multiWrap.hidden = true;
