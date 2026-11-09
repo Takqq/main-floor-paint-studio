@@ -513,9 +513,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=3`),
-            loadImage(`assets/${room}_mask.png?v=3`),
-            loadImage(`assets/${room}_orig.jpg?v=3`)
+            loadImage(`assets/${room}_base.jpg?v=4`),
+            loadImage(`assets/${room}_mask.png?v=4`),
+            loadImage(`assets/${room}_orig.jpg?v=4`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
