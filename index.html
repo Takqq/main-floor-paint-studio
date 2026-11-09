@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
   <a href="#main-workspace" class="skip-link">Skip to paint visualizer</a>
@@ -19,8 +19,14 @@
     </div>
 
     <div class="header-actions">
-      <button type="button" id="btn-reset-default" class="btn btn-secondary" title="Reset to Frittata, Grounded, and Positive Energy">
-        Reset Default Trio
+      <button type="button" id="btn-header-save-layout" class="btn btn-primary" title="Save all current individual wall colors across all 4 photos as a layout">
+        + Save Layout
+      </button>
+      <button type="button" id="btn-header-set-default" class="btn btn-secondary" title="Save current wall colors across all 4 photos as your default startup layout">
+        Set as Default
+      </button>
+      <button type="button" id="btn-reset-default" class="btn btn-secondary" title="Reset all walls to Frittata, Grounded, and Positive Energy">
+        Reset Trio
       </button>
       <button type="button" id="btn-download" class="btn btn-secondary">
         Save Image
@@ -142,6 +148,35 @@
             <strong class="recipe-color-name" id="recipe-name-3">Positive Energy</strong>
             <span class="recipe-color-code" id="recipe-code-3">S370-1 (#E1E2CF)</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Saved Layouts Studio Panel (Saves All 24 Individual Walls Across All 4 Photos) -->
+      <div class="saved-layouts-panel" aria-label="Saved Wall Layouts">
+        <div class="bt-box-header">
+          <strong>Saved Layouts (All 4 Photos &amp; Individual Walls)</strong>
+          <span class="card-hint" id="saved-layout-status">Changes auto-save live | Save named layouts to compare</span>
+        </div>
+
+        <div class="save-layout-form">
+          <input
+            type="text"
+            id="input-layout-name"
+            class="layout-name-input"
+            placeholder="Layout name (e.g. Option A - Pale Green Tea + Grounded)..."
+            aria-label="New layout name"
+            maxlength="60"
+          />
+          <button type="button" id="btn-save-layout" class="btn btn-primary btn-compact">
+            + Save Current Layout
+          </button>
+          <button type="button" id="btn-set-default-layout" class="btn btn-secondary btn-compact" title="Make the current wall colors load automatically when you open the page">
+            Set Current as Default
+          </button>
+        </div>
+
+        <div id="saved-layouts-list" class="saved-layouts-grid" role="list" aria-label="Saved Paint Layouts">
+          <!-- Populated dynamically by app.js -->
         </div>
       </div>
     </section>
@@ -364,6 +399,6 @@
     </aside>
   </main>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>

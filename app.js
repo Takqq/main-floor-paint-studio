@@ -507,6 +507,8 @@
     brandFilter: 'all',
     selectedBtLookup: BEHR_CATALOG[0],
     customFavourites: [],
+    savedLayouts: [],
+    activeLayoutId: null,
     zoneColors: [
       { ...TESTED_SWATCHES[0] },   // Zone 0: Frittata
       { ...DEFAULT_FAVOURITES[0] }, // Zone 1: Grounded
@@ -518,12 +520,33 @@
     roomAssets: {}
   };
 
-  function syncAllWallsFromZones() {
+  function cloneZones(zones) {
+    return zones.map((c) => ({ ...c }));
+  }
+
+  function cloneWalls(wallsObj) {
+    const out = {};
     Object.keys(ROOM_WALL_SEGMENTS).forEach((room) => {
-      state.wallColors[room] = ROOM_WALL_SEGMENTS[room].map((seg) => ({
-        ...state.zoneColors[seg.defaultZone]
+      out[room] = ROOM_WALL_SEGMENTS[room].map((seg, idx) => {
+        const src = wallsObj && wallsObj[room] && wallsObj[room][idx];
+        return src ? { ...src } : { ...state.zoneColors[seg.defaultZone] };
+      });
+    });
+    return out;
+  }
+
+  function buildWallsFromZones(zones) {
+    const out = {};
+    Object.keys(ROOM_WALL_SEGMENTS).forEach((room) => {
+      out[room] = ROOM_WALL_SEGMENTS[room].map((seg) => ({
+        ...zones[seg.defaultZone]
       }));
     });
+    return out;
+  }
+
+  function syncAllWallsFromZones() {
+    state.wallColors = buildWallsFromZones(state.zoneColors);
   }
 
   function syncZoneToWalls(zoneIdx, colorObj) {
@@ -538,12 +561,103 @@
 
   syncAllWallsFromZones();
 
+  function persistWorkingState() {
+    try {
+      localStorage.setItem(
+        'paint_studio_working_state_v1',
+        JSON.stringify({
+          zoneColors: state.zoneColors,
+          wallColors: state.wallColors,
+          activeLayoutId: state.activeLayoutId
+        })
+      );
+    } catch (err) {
+      // Ignore storage error
+    }
+  }
+
+  function persistSavedLayouts() {
+    try {
+      localStorage.setItem('paint_studio_saved_layouts_v1', JSON.stringify(state.savedLayouts));
+    } catch (err) {
+      // Ignore storage error
+    }
+  }
+
   try {
     const saved = localStorage.getItem('paint_studio_custom_favs');
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
         state.customFavourites = parsed;
+      }
+    }
+  } catch (err) {
+    // Ignore storage error
+  }
+
+  try {
+    const savedLayoutsRaw = localStorage.getItem('paint_studio_saved_layouts_v1');
+    if (savedLayoutsRaw) {
+      const parsedLayouts = JSON.parse(savedLayoutsRaw);
+      if (Array.isArray(parsedLayouts) && parsedLayouts.length > 0) {
+        state.savedLayouts = parsedLayouts;
+      }
+    }
+  } catch (err) {
+    // Ignore storage error
+  }
+
+  if (state.savedLayouts.length === 0) {
+    const trioZones = [
+      { ...TESTED_SWATCHES[0] },
+      { ...DEFAULT_FAVOURITES[0] },
+      { ...DEFAULT_FAVOURITES[0] },
+      { ...DEFAULT_FAVOURITES[1] }
+    ];
+    const greenTeaZones = [
+      { ...TESTED_SWATCHES[0] },
+      { ...DEFAULT_FAVOURITES[0] },
+      { ...DEFAULT_FAVOURITES[0] },
+      { ...DEFAULT_FAVOURITES[3] }
+    ];
+    state.savedLayouts = [
+      {
+        id: 'layout-starter-1',
+        name: 'Positive Energy + Grounded',
+        isDefault: true,
+        zoneColors: cloneZones(trioZones),
+        wallColors: buildWallsFromZones(trioZones)
+      },
+      {
+        id: 'layout-starter-2',
+        name: 'Pale Green Tea + Grounded',
+        isDefault: false,
+        zoneColors: cloneZones(greenTeaZones),
+        wallColors: buildWallsFromZones(greenTeaZones)
+      }
+    ];
+    state.activeLayoutId = 'layout-starter-1';
+  }
+
+  // Restore user's default layout or live working state on startup
+  try {
+    const defaultLayout = state.savedLayouts.find((l) => l.isDefault);
+    if (defaultLayout) {
+      state.zoneColors = cloneZones(defaultLayout.zoneColors);
+      state.wallColors = cloneWalls(defaultLayout.wallColors);
+      state.activeLayoutId = defaultLayout.id;
+    }
+
+    const workingRaw = localStorage.getItem('paint_studio_working_state_v1');
+    if (workingRaw) {
+      const working = JSON.parse(workingRaw);
+      if (working && Array.isArray(working.zoneColors) && working.zoneColors.length === 4) {
+        state.zoneColors = cloneZones(working.zoneColors);
+        state.wallColors = cloneWalls(working.wallColors);
+        if (working.activeLayoutId) {
+          state.activeLayoutId = working.activeLayoutId;
+        }
       }
     }
   } catch (err) {
@@ -643,9 +757,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=6`),
-            loadImage(`assets/${room}_mask.png?v=6`),
-            loadImage(`assets/${room}_orig.jpg?v=6`)
+            loadImage(`assets/${room}_base.jpg?v=7`),
+            loadImage(`assets/${room}_mask.png?v=7`),
+            loadImage(`assets/${room}_orig.jpg?v=7`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
@@ -885,6 +999,8 @@
     });
 
     renderRoomWallButtons();
+    renderSavedLayouts();
+    persistWorkingState();
 
     const activeCol = getActiveTargetColor();
     const activeHex = activeCol.hex.toUpperCase();
@@ -1036,6 +1152,246 @@
       });
 
       list.appendChild(btn);
+    });
+  }
+
+  // Saved Layouts (All 4 Photos & Individual Walls)
+  function setSavedStatus(msg) {
+    const statusEl = document.getElementById('saved-layout-status');
+    if (statusEl) {
+      statusEl.textContent = msg;
+    }
+  }
+
+  function getLayoutDistinctColors(layout) {
+    const seen = new Set();
+    const result = [];
+    const addCol = (c) => {
+      if (!c || !c.hex) return;
+      const h = c.hex.toUpperCase();
+      if (!seen.has(h)) {
+        seen.add(h);
+        result.push(c);
+      }
+    };
+    if (layout.wallColors) {
+      Object.keys(ROOM_WALL_SEGMENTS).forEach((room) => {
+        (layout.wallColors[room] || []).forEach(addCol);
+      });
+    }
+    (layout.zoneColors || []).forEach(addCol);
+    return result.slice(0, 6);
+  }
+
+  function applySavedLayout(layout) {
+    if (!layout) return;
+    state.zoneColors = cloneZones(layout.zoneColors);
+    state.wallColors = cloneWalls(layout.wallColors);
+    state.activeLayoutId = layout.id;
+    state.showOriginal = false;
+    const compareBtnEl = document.getElementById('btn-compare-orig');
+    if (compareBtnEl) {
+      compareBtnEl.setAttribute('aria-pressed', 'false');
+      compareBtnEl.textContent = 'Show Original Unpainted';
+    }
+    const activeCol = getActiveTargetColor();
+    const rgb = hexToRgb(activeCol.hex);
+    state.wheelHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    updateWheelUI();
+    renderActiveRoom();
+    setSavedStatus(`Loaded layout: "${layout.name}"`);
+  }
+
+  function saveCurrentLayout(makeDefault = false) {
+    const nameInput = document.getElementById('input-layout-name');
+    const rawName = nameInput ? nameInput.value.trim() : '';
+    const autoName = `Layout #${state.savedLayouts.length + 1}: ${state.zoneColors[3].name} + ${state.zoneColors[1].name}`;
+    const finalName = rawName || autoName;
+
+    if (makeDefault) {
+      state.savedLayouts.forEach((l) => {
+        l.isDefault = false;
+      });
+    }
+
+    const newLayout = {
+      id: 'layout-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+      name: finalName,
+      isDefault: Boolean(makeDefault),
+      zoneColors: cloneZones(state.zoneColors),
+      wallColors: cloneWalls(state.wallColors)
+    };
+
+    state.savedLayouts.unshift(newLayout);
+    state.activeLayoutId = newLayout.id;
+    if (nameInput) nameInput.value = '';
+    persistSavedLayouts();
+    persistWorkingState();
+    renderSavedLayouts();
+    setSavedStatus(
+      makeDefault
+        ? `Saved & set as default startup layout: "${finalName}"`
+        : `Saved layout: "${finalName}"`
+    );
+  }
+
+  function setCurrentAsDefaultLayout() {
+    const nameInput = document.getElementById('input-layout-name');
+    const rawName = nameInput ? nameInput.value.trim() : '';
+
+    // If user typed a new name, create a new layout and mark it default
+    if (rawName) {
+      saveCurrentLayout(true);
+      return;
+    }
+
+    // If an existing layout is active, update it with current wall colors and make it default
+    let target = state.savedLayouts.find((l) => l.id === state.activeLayoutId);
+    if (!target && state.savedLayouts.length > 0) {
+      target = state.savedLayouts.find((l) => l.isDefault) || state.savedLayouts[0];
+    }
+
+    if (target) {
+      state.savedLayouts.forEach((l) => {
+        l.isDefault = l.id === target.id;
+      });
+      target.zoneColors = cloneZones(state.zoneColors);
+      target.wallColors = cloneWalls(state.wallColors);
+      state.activeLayoutId = target.id;
+      persistSavedLayouts();
+      persistWorkingState();
+      renderSavedLayouts();
+      setSavedStatus(`Updated & set as default startup layout: "${target.name}"`);
+    } else {
+      saveCurrentLayout(true);
+    }
+  }
+
+  function renderSavedLayouts() {
+    const container = document.getElementById('saved-layouts-list');
+    if (!container) return;
+    container.innerHTML = '';
+
+    state.savedLayouts.forEach((layout) => {
+      const card = document.createElement('div');
+      const isActive = layout.id === state.activeLayoutId;
+      card.className = 'saved-layout-card' + (isActive ? ' active' : '');
+      card.setAttribute('role', 'listitem');
+
+      const mainBtn = document.createElement('button');
+      mainBtn.type = 'button';
+      mainBtn.className = 'saved-layout-main';
+      mainBtn.title = 'Click to load this layout across all 4 photos';
+
+      const info = document.createElement('div');
+      info.className = 'saved-layout-info';
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'saved-layout-title-row';
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'saved-layout-name';
+      nameEl.textContent = layout.name;
+      titleRow.appendChild(nameEl);
+
+      if (layout.isDefault) {
+        const badge = document.createElement('span');
+        badge.className = 'saved-layout-badge';
+        badge.textContent = 'Default';
+        titleRow.appendChild(badge);
+      }
+
+      const distinctCols = getLayoutDistinctColors(layout);
+      const subEl = document.createElement('span');
+      subEl.className = 'saved-layout-sub';
+      subEl.textContent = distinctCols.map((c) => c.name).slice(0, 3).join(' + ');
+
+      info.appendChild(titleRow);
+      info.appendChild(subEl);
+
+      const swatchesWrap = document.createElement('div');
+      swatchesWrap.className = 'saved-layout-swatches';
+      distinctCols.forEach((c) => {
+        const dot = document.createElement('span');
+        dot.className = 'saved-layout-dot';
+        dot.style.backgroundColor = c.hex;
+        dot.title = `${c.name} (${c.hex})`;
+        swatchesWrap.appendChild(dot);
+      });
+
+      mainBtn.appendChild(info);
+      mainBtn.appendChild(swatchesWrap);
+      mainBtn.addEventListener('click', () => {
+        applySavedLayout(layout);
+      });
+
+      const actionsRow = document.createElement('div');
+      actionsRow.className = 'saved-layout-actions';
+
+      const loadBtn = document.createElement('button');
+      loadBtn.type = 'button';
+      loadBtn.className = 'btn-layout-action' + (isActive ? ' primary' : '');
+      loadBtn.textContent = isActive ? 'Active (Reload)' : 'Load';
+      loadBtn.addEventListener('click', () => {
+        applySavedLayout(layout);
+      });
+
+      const updateBtn = document.createElement('button');
+      updateBtn.type = 'button';
+      updateBtn.className = 'btn-layout-action';
+      updateBtn.textContent = 'Overwrite';
+      updateBtn.title = 'Save current wall colors over this layout';
+      updateBtn.addEventListener('click', () => {
+        layout.zoneColors = cloneZones(state.zoneColors);
+        layout.wallColors = cloneWalls(state.wallColors);
+        state.activeLayoutId = layout.id;
+        persistSavedLayouts();
+        persistWorkingState();
+        renderSavedLayouts();
+        setSavedStatus(`Updated layout: "${layout.name}" with current wall colors`);
+      });
+
+      const defaultBtn = document.createElement('button');
+      defaultBtn.type = 'button';
+      defaultBtn.className = 'btn-layout-action';
+      defaultBtn.textContent = layout.isDefault ? 'Is Default' : 'Set Default';
+      defaultBtn.addEventListener('click', () => {
+        state.savedLayouts.forEach((l) => {
+          l.isDefault = l.id === layout.id;
+        });
+        persistSavedLayouts();
+        renderSavedLayouts();
+        setSavedStatus(`Set "${layout.name}" as default startup layout`);
+      });
+
+      actionsRow.appendChild(loadBtn);
+      actionsRow.appendChild(updateBtn);
+      actionsRow.appendChild(defaultBtn);
+
+      if (state.savedLayouts.length > 1) {
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'btn-layout-action danger';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', () => {
+          const wasDefault = layout.isDefault;
+          state.savedLayouts = state.savedLayouts.filter((l) => l.id !== layout.id);
+          if (wasDefault && state.savedLayouts.length > 0) {
+            state.savedLayouts[0].isDefault = true;
+          }
+          if (state.activeLayoutId === layout.id) {
+            state.activeLayoutId = state.savedLayouts[0] ? state.savedLayouts[0].id : null;
+          }
+          persistSavedLayouts();
+          renderSavedLayouts();
+          setSavedStatus(`Deleted layout: "${layout.name}"`);
+        });
+        actionsRow.appendChild(delBtn);
+      }
+
+      card.appendChild(mainBtn);
+      card.appendChild(actionsRow);
+      container.appendChild(card);
     });
   }
 
@@ -1648,6 +2004,36 @@
     renderActiveRoom();
   });
 
+  const btnSaveLayout = document.getElementById('btn-save-layout');
+  if (btnSaveLayout) {
+    btnSaveLayout.addEventListener('click', () => saveCurrentLayout(false));
+  }
+
+  const btnSetDefaultLayout = document.getElementById('btn-set-default-layout');
+  if (btnSetDefaultLayout) {
+    btnSetDefaultLayout.addEventListener('click', () => setCurrentAsDefaultLayout());
+  }
+
+  const btnHeaderSaveLayout = document.getElementById('btn-header-save-layout');
+  if (btnHeaderSaveLayout) {
+    btnHeaderSaveLayout.addEventListener('click', () => saveCurrentLayout(false));
+  }
+
+  const btnHeaderSetDefault = document.getElementById('btn-header-set-default');
+  if (btnHeaderSetDefault) {
+    btnHeaderSetDefault.addEventListener('click', () => setCurrentAsDefaultLayout());
+  }
+
+  const inputLayoutName = document.getElementById('input-layout-name');
+  if (inputLayoutName) {
+    inputLayoutName.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveCurrentLayout(false);
+      }
+    });
+  }
+
   document.getElementById('btn-reset-default').addEventListener('click', () => {
     state.zoneColors = [
       { ...TESTED_SWATCHES[0] },
@@ -1661,6 +2047,7 @@
     compareBtn.textContent = 'Show Original Unpainted';
     setActiveZone(3);
     renderActiveRoom();
+    setSavedStatus('Reset all walls to Frittata, Grounded, and Positive Energy');
   });
 
   document.getElementById('btn-download').addEventListener('click', () => {
