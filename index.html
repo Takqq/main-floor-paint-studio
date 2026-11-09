@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main Floor Paint Visualizer | Behr &amp; BeautiTone Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#main-workspace" class="skip-link">Skip to paint visualizer</a>
+
+  <header class="site-header">
+    <div class="header-brand">
+      <h1 class="site-title">Main Floor Paint Studio</h1>
+      <p class="site-subtitle">Click any wall in the photo or select a wall zone below to swap colors in real time.</p>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" id="btn-reset-default" class="btn btn-secondary" title="Reset to Frittata, Grounded, and Positive Energy">
+        Reset Default Trio
+      </button>
+      <button type="button" id="btn-download" class="btn btn-secondary">
+        Save Image
+      </button>
+      <button type="button" id="btn-theme-toggle" class="btn btn-secondary" aria-label="Switch color theme">
+        <span id="theme-toggle-text">Dark Studio</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-workspace" class="studio-layout">
+    <!-- Left Column: Interactive Room Canvas & Room Switcher -->
+    <section class="viewer-column" aria-label="Interactive Room Preview">
+      <div class="viewer-toolbar">
+        <div class="room-tabs" role="tablist" aria-label="Select Room Photo">
+          <button type="button" role="tab" aria-selected="true" data-room="hallway" class="room-tab active">
+            1. Hallway &amp; Stairs
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-room="stairwell" class="room-tab">
+            2. Stairwell Entry
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-room="living" class="room-tab">
+            3. Living Room &amp; Kitchen
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-room="all" class="room-tab">
+            All 3 Views
+          </button>
+        </div>
+
+        <div class="viewer-toggles">
+          <button type="button" id="btn-compare-orig" class="btn btn-secondary btn-compact" aria-pressed="false">
+            Show Original Unpainted
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading / Error Banner (R-27) -->
+      <div id="canvas-status" class="status-banner" role="status" aria-live="polite">
+        Loading high-resolution room photos and wall masks...
+      </div>
+
+      <!-- Single Room Interactive Canvas Container -->
+      <div id="single-canvas-wrap" class="canvas-stage">
+        <canvas id="room-canvas" aria-label="Interactive painted room preview. Click any wall zone to select it."></canvas>
+        <div id="hover-zone-pill" class="hover-zone-pill" hidden>Click to select wall</div>
+      </div>
+
+      <!-- All 3 Rooms Grid Container -->
+      <div id="multi-canvas-wrap" class="multi-canvas-grid" hidden>
+        <div class="multi-card">
+          <div class="multi-card-header">
+            <span>1. Hallway &amp; Stairs</span>
+            <button type="button" class="btn-link" data-jump-room="hallway">Expand</button>
+          </div>
+          <canvas id="multi-canvas-hallway"></canvas>
+        </div>
+        <div class="multi-card">
+          <div class="multi-card-header">
+            <span>2. Stairwell Entry</span>
+            <button type="button" class="btn-link" data-jump-room="stairwell">Expand</button>
+          </div>
+          <canvas id="multi-canvas-stairwell"></canvas>
+        </div>
+        <div class="multi-card">
+          <div class="multi-card-header">
+            <span>3. Living Room &amp; Kitchen</span>
+            <button type="button" class="btn-link" data-jump-room="living">Expand</button>
+          </div>
+          <canvas id="multi-canvas-living"></canvas>
+        </div>
+      </div>
+
+      <!-- Active Palette Summary Strip Below Canvas -->
+      <div class="active-recipe-bar" aria-label="Current Paint Recipe">
+        <div class="recipe-chip" data-select-zone="0" tabindex="0" role="button" aria-label="Select Back Stairwell Wall">
+          <span class="recipe-swatch" id="recipe-swatch-0"></span>
+          <div class="recipe-meta">
+            <span class="recipe-zone-label">Back Stairwell</span>
+            <strong class="recipe-color-name" id="recipe-name-0">Frittata</strong>
+            <span class="recipe-color-code" id="recipe-code-0">M290-2 (#FEEBC8)</span>
+          </div>
+        </div>
+
+        <div class="recipe-chip" data-select-zone="1" tabindex="0" role="button" aria-label="Select Stairwell Layer 1">
+          <span class="recipe-swatch" id="recipe-swatch-1"></span>
+          <div class="recipe-meta">
+            <span class="recipe-zone-label">Layer 1 (Lower Stair)</span>
+            <strong class="recipe-color-name" id="recipe-name-1">Grounded</strong>
+            <span class="recipe-color-code" id="recipe-code-1">T27-01 (#565344)</span>
+          </div>
+        </div>
+
+        <div class="recipe-chip" data-select-zone="2" tabindex="0" role="button" aria-label="Select Stairwell Layer 2">
+          <span class="recipe-swatch" id="recipe-swatch-2"></span>
+          <div class="recipe-meta">
+            <span class="recipe-zone-label">Layer 2 (Handrail Wall)</span>
+            <strong class="recipe-color-name" id="recipe-name-2">Grounded</strong>
+            <span class="recipe-color-code" id="recipe-code-2">T27-01 (#565344)</span>
+          </div>
+        </div>
+
+        <div class="recipe-chip active" data-select-zone="3" tabindex="0" role="button" aria-label="Select Main Floor Walls">
+          <span class="recipe-swatch" id="recipe-swatch-3"></span>
+          <div class="recipe-meta">
+            <span class="recipe-zone-label">Main Floor Walls</span>
+            <strong class="recipe-color-name" id="recipe-name-3">Positive Energy</strong>
+            <span class="recipe-color-code" id="recipe-code-3">S370-1 (#E1E2CF)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Wall Zone Selector, Favourites, Swatches & Color Wheel -->
+    <aside class="controls-column" aria-label="Paint Selection Controls">
+      <!-- Step 1: Which Wall Zone Are You Painting? -->
+      <section class="control-card">
+        <div class="card-header-row">
+          <h2 class="card-title">1. Active Wall Zone</h2>
+          <span class="card-hint">Or click any wall in the photo</span>
+        </div>
+
+        <div class="zone-buttons" role="radiogroup" aria-label="Wall Zone to Paint">
+          <button type="button" class="zone-btn active" data-zone="3" role="radio" aria-checked="true">
+            <span class="zone-dot" id="zone-dot-3"></span>
+            <span class="zone-btn-text">
+              <strong>Main Floor &amp; Hallway</strong>
+              <small id="zone-sub-3">Positive Energy (S370-1)</small>
+            </span>
+          </button>
+
+          <button type="button" class="zone-btn" data-zone="1" role="radio" aria-checked="false">
+            <span class="zone-dot" id="zone-dot-1"></span>
+            <span class="zone-btn-text">
+              <strong>Stair Layer 1 (Front Pony Wall)</strong>
+              <small id="zone-sub-1">Grounded (T27-01)</small>
+            </span>
+          </button>
+
+          <button type="button" class="zone-btn" data-zone="2" role="radio" aria-checked="false">
+            <span class="zone-dot" id="zone-dot-2"></span>
+            <span class="zone-btn-text">
+              <strong>Stair Layer 2 (Handrail Wall)</strong>
+              <small id="zone-sub-2">Grounded (T27-01)</small>
+            </span>
+          </button>
+
+          <button type="button" class="zone-btn" data-zone="0" role="radio" aria-checked="false">
+            <span class="zone-dot" id="zone-dot-0"></span>
+            <span class="zone-btn-text">
+              <strong>Back Stairwell Wall</strong>
+              <small id="zone-sub-0">Frittata (M290-2)</small>
+            </span>
+          </button>
+        </div>
+
+        <div class="link-toggles">
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-link-stairs" checked />
+            <span>Link First 2 Stair Layers together (Layer 1 &amp; Layer 2 share the same color)</span>
+          </label>
+          <label class="checkbox-label" id="living-unlink-row" hidden>
+            <input type="checkbox" id="chk-unlink-living" />
+            <span>Unlink Living Room walls to test an accent wall on the left skyline wall</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Step 2: Favourite Swatches -->
+      <section class="control-card">
+        <div class="card-header-row">
+          <h2 class="card-title">2. Favourites</h2>
+          <span class="card-hint">Applies to active wall zone</span>
+        </div>
+
+        <div id="favourites-grid" class="swatch-grid favourites-grid" role="list" aria-label="Favourite Paint Colors">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- Step 3: Interactive Color Wheel & Custom Fine-Tuning -->
+      <section class="control-card">
+        <div class="card-header-row">
+          <h2 class="card-title">3. Color Wheel &amp; Fine-Tuner</h2>
+          <span class="card-hint" id="wheel-live-readout">#E1E2CF | LRV 75</span>
+        </div>
+
+        <div class="wheel-studio">
+          <div class="wheel-canvas-wrap">
+            <canvas id="color-wheel-canvas" width="220" height="220" tabindex="0" aria-label="Hue and Saturation Color Wheel. Use mouse, touch, or arrow keys to adjust hue and saturation."></canvas>
+            <div id="wheel-cursor" class="wheel-cursor" aria-hidden="true"></div>
+          </div>
+
+          <div class="wheel-sliders">
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <label for="slider-lightness">Lightness / LRV</label>
+                <span id="lightness-val-label" class="mono-tag">85% (LRV 75)</span>
+              </div>
+              <input type="range" id="slider-lightness" min="8" max="97" value="85" />
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <label for="slider-saturation">Saturation / Mute</label>
+                <span id="saturation-val-label" class="mono-tag">27%</span>
+              </div>
+              <input type="range" id="slider-saturation" min="0" max="100" value="27" />
+            </div>
+
+            <div class="hex-input-row">
+              <div class="hex-field-group">
+                <label for="input-hex">HEX Code</label>
+                <div class="hex-input-pair">
+                  <input type="color" id="input-native-color" value="#E1E2CF" aria-label="System color picker" />
+                  <input type="text" id="input-hex" value="#E1E2CF" maxlength="7" spellcheck="false" />
+                </div>
+              </div>
+              <button type="button" id="btn-save-custom" class="btn btn-primary">
+                + Add to Favourites
+              </button>
+            </div>
+            <p id="hex-error-msg" class="field-error" hidden>Enter a 6-digit hex code such as #E1E2CF.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: Other Tested Behr & BeautiTone Colors -->
+      <section class="control-card">
+        <div class="card-header-row">
+          <h2 class="card-title">4. Other Tested Colors</h2>
+          <span class="card-hint">Behr 2027 &amp; BeautiTone matches</span>
+        </div>
+
+        <div id="tested-grid" class="swatch-grid" role="list" aria-label="Other Tested Paint Colors">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- Step 5: One-Click Whole-Room Combinations -->
+      <section class="control-card">
+        <div class="card-header-row">
+          <h2 class="card-title">5. Quick Whole-Room Combos</h2>
+          <span class="card-hint">Sets all 3 tiers at once</span>
+        </div>
+
+        <div class="combo-list" id="combo-list">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
