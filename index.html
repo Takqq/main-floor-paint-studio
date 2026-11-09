@@ -45,8 +45,11 @@
           <button type="button" role="tab" aria-selected="false" data-room="living" class="room-tab">
             3. Living Room &amp; Kitchen
           </button>
+          <button type="button" role="tab" aria-selected="false" data-room="entryway" class="room-tab">
+            4. Front Entryway
+          </button>
           <button type="button" role="tab" aria-selected="false" data-room="all" class="room-tab">
-            All 3 Views
+            All 4 Views
           </button>
         </div>
 
@@ -68,7 +71,7 @@
         <div id="hover-zone-pill" class="hover-zone-pill" hidden>Click to select wall</div>
       </div>
 
-      <!-- All 3 Rooms Grid Container -->
+      <!-- All 4 Rooms Grid Container -->
       <div id="multi-canvas-wrap" class="multi-canvas-grid" hidden>
         <div class="multi-card">
           <div class="multi-card-header">
@@ -90,6 +93,13 @@
             <button type="button" class="btn-link" data-jump-room="living">Expand</button>
           </div>
           <canvas id="multi-canvas-living"></canvas>
+        </div>
+        <div class="multi-card">
+          <div class="multi-card-header">
+            <span>4. Front Entryway</span>
+            <button type="button" class="btn-link" data-jump-room="entryway">Expand</button>
+          </div>
+          <canvas id="multi-canvas-entryway"></canvas>
         </div>
       </div>
 

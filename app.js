@@ -507,15 +507,15 @@
   }
 
   async function loadAllRoomAssets() {
-    const rooms = ['hallway', 'stairwell', 'living'];
+    const rooms = ['hallway', 'stairwell', 'living', 'entryway'];
     const statusEl = document.getElementById('canvas-status');
     try {
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=2`),
-            loadImage(`assets/${room}_mask.png?v=2`),
-            loadImage(`assets/${room}_orig.jpg?v=2`)
+            loadImage(`assets/${room}_base.jpg?v=3`),
+            loadImage(`assets/${room}_mask.png?v=3`),
+            loadImage(`assets/${room}_orig.jpg?v=3`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
@@ -645,6 +645,7 @@
       renderRoomToCanvas('hallway', document.getElementById('multi-canvas-hallway'));
       renderRoomToCanvas('stairwell', document.getElementById('multi-canvas-stairwell'));
       renderRoomToCanvas('living', document.getElementById('multi-canvas-living'));
+      renderRoomToCanvas('entryway', document.getElementById('multi-canvas-entryway'));
     } else {
       singleWrap.hidden = false;
       multiWrap.hidden = true;
