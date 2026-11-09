@@ -412,7 +412,79 @@ body {
   color: var(--text-secondary);
 }
 
-/* Zone Selector Buttons */
+/* Individual Wall Buttons & Zone Selector Buttons */
+.individual-walls-box {
+  background-color: var(--bg-subtle);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.room-walls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+}
+
+.wall-seg-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.wall-seg-btn:hover {
+  background-color: var(--bg-active);
+}
+
+.wall-seg-btn.active {
+  background-color: var(--bg-active);
+  border: 2.5px solid var(--accent-primary);
+}
+
+.wall-seg-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.wall-seg-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wall-seg-text strong {
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.wall-seg-text small {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zone-group-header {
+  padding-top: 2px;
+}
+
 .zone-buttons {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

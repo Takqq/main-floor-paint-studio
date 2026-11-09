@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
   <a href="#main-workspace" class="skip-link">Skip to paint visualizer</a>
@@ -54,6 +54,9 @@
         </div>
 
         <div class="viewer-toggles">
+          <button type="button" id="btn-brush-mode" class="btn btn-secondary btn-compact" aria-pressed="false" title="When ON, clicking any wall in the photo immediately paints it with the current color">
+            Paint on Click (Brush): OFF
+          </button>
           <button type="button" id="btn-compare-orig" class="btn btn-secondary btn-compact" aria-pressed="false">
             Show Original Unpainted
           </button>
@@ -145,18 +148,34 @@
 
     <!-- Right Column: Wall Zone Selector, Favourites, Swatches & Color Wheel -->
     <aside class="controls-column" aria-label="Paint Selection Controls">
-      <!-- Step 1: Which Wall Zone Are You Painting? -->
+      <!-- Step 1: Individual Clicked Wall OR Whole Wall Zone -->
       <section class="control-card">
         <div class="card-header-row">
-          <h2 class="card-title">1. Active Wall Zone</h2>
-          <span class="card-hint">Or click any wall in the photo</span>
+          <h2 class="card-title">1. Target Wall or Zone</h2>
+          <span class="card-hint" id="active-target-badge">Click any wall in the photo to paint it independently</span>
+        </div>
+
+        <!-- Individual Walls in Current Photo (Independent of Zone) -->
+        <div class="individual-walls-box">
+          <div class="bt-box-header">
+            <strong>Individual Walls in This Photo (Independent)</strong>
+            <span class="card-hint">Click in photo or below</span>
+          </div>
+          <div id="room-walls-grid" class="room-walls-grid" role="radiogroup" aria-label="Individual Walls in Current Photo">
+            <!-- Populated dynamically by app.js for the active room -->
+          </div>
+        </div>
+
+        <div class="bt-box-header zone-group-header">
+          <strong>Or Paint a Whole Zone Across Rooms</strong>
+          <span class="card-hint">Updates all walls in that zone</span>
         </div>
 
         <div class="zone-buttons" role="radiogroup" aria-label="Wall Zone to Paint">
           <button type="button" class="zone-btn active" data-zone="3" role="radio" aria-checked="true">
             <span class="zone-dot" id="zone-dot-3"></span>
             <span class="zone-btn-text">
-              <strong>Main Floor &amp; Hallway</strong>
+              <strong>All Main Floor &amp; Hallway</strong>
               <small id="zone-sub-3">Positive Energy (S370-1)</small>
             </span>
           </button>
@@ -164,7 +183,7 @@
           <button type="button" class="zone-btn" data-zone="1" role="radio" aria-checked="false">
             <span class="zone-dot" id="zone-dot-1"></span>
             <span class="zone-btn-text">
-              <strong>Stair Layer 1 (Front Pony Wall)</strong>
+              <strong>All Stair Layer 1 (Pony Wall)</strong>
               <small id="zone-sub-1">Grounded (T27-01)</small>
             </span>
           </button>
@@ -172,7 +191,7 @@
           <button type="button" class="zone-btn" data-zone="2" role="radio" aria-checked="false">
             <span class="zone-dot" id="zone-dot-2"></span>
             <span class="zone-btn-text">
-              <strong>Stair Layer 2 (Handrail Wall)</strong>
+              <strong>All Stair Layer 2 (Handrail)</strong>
               <small id="zone-sub-2">Grounded (T27-01)</small>
             </span>
           </button>
@@ -180,7 +199,7 @@
           <button type="button" class="zone-btn" data-zone="0" role="radio" aria-checked="false">
             <span class="zone-dot" id="zone-dot-0"></span>
             <span class="zone-btn-text">
-              <strong>Back Stairwell Wall</strong>
+              <strong>All Back Stairwell Walls</strong>
               <small id="zone-sub-0">Frittata (M290-2)</small>
             </span>
           </button>
@@ -189,11 +208,11 @@
         <div class="link-toggles">
           <label class="checkbox-label">
             <input type="checkbox" id="chk-link-stairs" checked />
-            <span>Link First 2 Stair Layers together (Layer 1 &amp; Layer 2 share the same color)</span>
+            <span>When using Whole-Zone buttons, link Layer 1 &amp; Layer 2 together</span>
           </label>
           <label class="checkbox-label" id="living-unlink-row" hidden>
             <input type="checkbox" id="chk-unlink-living" />
-            <span>Unlink Living Room walls to test an accent wall on the left skyline wall</span>
+            <span>Unlink Living Room walls</span>
           </label>
         </div>
       </section>
@@ -345,6 +364,6 @@
     </aside>
   </main>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

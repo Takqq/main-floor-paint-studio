@@ -454,9 +454,50 @@
     return scored.slice(0, count);
   }
 
+  // Individual clickable wall segments per room (independent of zone)
+  const ROOM_WALL_SEGMENTS = {
+    hallway: [
+      { id: 0, name: 'Left Window Wall', defaultZone: 0 },
+      { id: 1, name: 'Upper Back Stairwell', defaultZone: 0 },
+      { id: 2, name: 'Stair Layer 1 (Pony Wall)', defaultZone: 1 },
+      { id: 3, name: 'Stair Layer 2 (Handrail)', defaultZone: 2 },
+      { id: 4, name: 'Door Header Bulkhead', defaultZone: 3 },
+      { id: 5, name: 'Far-Back Living Wall', defaultZone: 3 },
+      { id: 6, name: 'Right Hallway Wall', defaultZone: 3 }
+    ],
+    stairwell: [
+      { id: 0, name: 'Upper Back Stairwell', defaultZone: 0 },
+      { id: 1, name: 'Stair Layer 1 (Mirror Wall)', defaultZone: 1 },
+      { id: 2, name: 'Stair Layer 2 (Middle Stair)', defaultZone: 2 },
+      { id: 3, name: 'Left Front Door Wall', defaultZone: 3 },
+      { id: 4, name: 'Far-Right Hallway Wall', defaultZone: 3 }
+    ],
+    living: [
+      { id: 0, name: 'Left Skyline Wall', defaultZone: 3 },
+      { id: 1, name: 'Center Living Window Wall', defaultZone: 3 },
+      { id: 2, name: 'Center Clock Pillar', defaultZone: 3 },
+      { id: 3, name: 'Back Dining Window Wall', defaultZone: 3 },
+      { id: 4, name: 'Back Kitchen Shelf Wall', defaultZone: 3 },
+      { id: 5, name: 'Right Foreground Wall', defaultZone: 3 }
+    ],
+    entryway: [
+      { id: 0, name: 'Far-Left Coat Hook Wall', defaultZone: 3 },
+      { id: 1, name: 'Left Front Door Wall', defaultZone: 3 },
+      { id: 2, name: 'Center Closet Wall', defaultZone: 3 },
+      { id: 3, name: 'Stair Layer 1 (Mirror Wall)', defaultZone: 1 },
+      { id: 4, name: 'Back Stairwell Window Wall', defaultZone: 0 },
+      { id: 5, name: 'Stair Layer 2 (Handrail)', defaultZone: 2 }
+    ]
+  };
+
   const state = {
     activeRoom: 'hallway',
+    targetMode: 'zone', // 'wall' (individual clicked wall) or 'zone' (whole zone)
     activeZone: 3,
+    activeWall: { room: 'hallway', segId: 6 },
+    brushOnClick: false,
+    lastPickedColor: { ...DEFAULT_FAVOURITES[1] },
+    flashWall: null,
     linkStairLayers: true,
     unlinkLiving: false,
     showOriginal: false,
@@ -471,9 +512,30 @@
       { ...DEFAULT_FAVOURITES[0] }, // Zone 2: Grounded
       { ...DEFAULT_FAVOURITES[1] }  // Zone 3: Positive Energy
     ],
+    wallColors: {},
     wheelHSL: { h: 63, s: 27, l: 85 },
     roomAssets: {}
   };
+
+  function syncAllWallsFromZones() {
+    Object.keys(ROOM_WALL_SEGMENTS).forEach((room) => {
+      state.wallColors[room] = ROOM_WALL_SEGMENTS[room].map((seg) => ({
+        ...state.zoneColors[seg.defaultZone]
+      }));
+    });
+  }
+
+  function syncZoneToWalls(zoneIdx, colorObj) {
+    Object.keys(ROOM_WALL_SEGMENTS).forEach((room) => {
+      ROOM_WALL_SEGMENTS[room].forEach((seg, idx) => {
+        if (seg.defaultZone === zoneIdx) {
+          state.wallColors[room][idx] = { ...colorObj };
+        }
+      });
+    });
+  }
+
+  syncAllWallsFromZones();
 
   try {
     const saved = localStorage.getItem('paint_studio_custom_favs');
@@ -487,7 +549,7 @@
     // Ignore storage error
   }
 
-  // Image Asset Loader
+  // Image Asset Loader & Per-Pixel Wall Segment Map Builder
   function loadImage(src) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -506,6 +568,73 @@
     return ctx.getImageData(0, 0, c.width, c.height);
   }
 
+  function buildRoomSegmentMaps(room, width, height, maskPixels) {
+    const numPixels = width * height;
+    const m0Seg = new Uint8Array(numPixels);
+    const m1Seg = new Uint8Array(numPixels);
+    const m2Seg = new Uint8Array(numPixels);
+    const m3Seg = new Uint8Array(numPixels);
+    const topSeg = new Uint8Array(numPixels);
+    topSeg.fill(255);
+
+    for (let y = 0; y < height; y++) {
+      const rowOffset = y * width;
+      for (let x = 0; x < width; x++) {
+        const p = rowOffset + x;
+        const idx = p * 4;
+        const mr = maskPixels[idx];
+        const mg = maskPixels[idx + 1];
+        const mb = maskPixels[idx + 2];
+
+        const m3 = mr < mb ? mr : mb;
+        const m0 = mr - m3;
+        const m1 = mg;
+        const m2 = mb - m3;
+
+        let s0 = 0, s1 = 0, s2 = 0, s3 = 0;
+
+        if (room === 'hallway') {
+          const cornerX = y < 48 ? 204 + (48 - y) * 1.9 : 200 + y * 0.076;
+          s0 = x < cornerX ? 0 : 1;
+          s1 = 2;
+          s2 = 3;
+          s3 = x < 625 && y < 410 ? 4 : x < 735 ? 5 : 6;
+        } else if (room === 'stairwell') {
+          s0 = 0;
+          s1 = 1;
+          s2 = 2;
+          s3 = x < 450 ? 3 : 4;
+        } else if (room === 'living') {
+          s0 = 1;
+          s1 = 0;
+          s2 = 5;
+          s3 = x < 590 ? 1 : x < 648 ? 2 : x < 882 ? 3 : 4;
+        } else if (room === 'entryway') {
+          const doorCornerX = 451 - (y - 225) * 0.022;
+          s3 = x < 82 ? 0 : x < doorCornerX ? 1 : 2;
+          s1 = 3;
+          s0 = 4;
+          s2 = 5;
+        }
+
+        m0Seg[p] = s0;
+        m1Seg[p] = s1;
+        m2Seg[p] = s2;
+        m3Seg[p] = s3;
+
+        const maxM = Math.max(m0, m1, m2, m3);
+        if (maxM >= 40) {
+          if (maxM === m3) topSeg[p] = s3;
+          else if (maxM === m2) topSeg[p] = s2;
+          else if (maxM === m1) topSeg[p] = s1;
+          else topSeg[p] = s0;
+        }
+      }
+    }
+
+    return { m0Seg, m1Seg, m2Seg, m3Seg, topSeg };
+  }
+
   async function loadAllRoomAssets() {
     const rooms = ['hallway', 'stairwell', 'living', 'entryway'];
     const statusEl = document.getElementById('canvas-status');
@@ -513,19 +642,21 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=4`),
-            loadImage(`assets/${room}_mask.png?v=4`),
-            loadImage(`assets/${room}_orig.jpg?v=4`)
+            loadImage(`assets/${room}_base.jpg?v=5`),
+            loadImage(`assets/${room}_mask.png?v=5`),
+            loadImage(`assets/${room}_orig.jpg?v=5`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
           const origData = extractImageData(origImg);
+          const segMaps = buildRoomSegmentMaps(room, baseData.width, baseData.height, maskData.data);
           state.roomAssets[room] = {
             width: baseData.width,
             height: baseData.height,
             basePixels: baseData.data,
             maskPixels: maskData.data,
             origPixels: origData.data,
+            ...segMaps,
             outputImageData: new ImageData(baseData.width, baseData.height)
           };
         })
@@ -539,12 +670,12 @@
     }
   }
 
-  // Real-Time Pixel Shader
+  // Real-Time Pixel Shader (Supports Independent Per-Wall Colors)
   function renderRoomToCanvas(roomKey, targetCanvas) {
     const asset = state.roomAssets[roomKey];
     if (!asset) return;
 
-    const { width, height, basePixels, maskPixels, origPixels, outputImageData } = asset;
+    const { width, height, basePixels, maskPixels, origPixels, m0Seg, m1Seg, m2Seg, m3Seg, topSeg, outputImageData } = asset;
     if (targetCanvas.width !== width || targetCanvas.height !== height) {
       targetCanvas.width = width;
       targetCanvas.height = height;
@@ -557,19 +688,14 @@
       return;
     }
 
-    const c0 = hexToRgb(state.zoneColors[0].hex);
-    const c1 = hexToRgb(state.zoneColors[1].hex);
-    const c2 = hexToRgb(state.zoneColors[2].hex);
-    const c3 = hexToRgb(state.zoneColors[3].hex);
-
-    const isLivingLinked = roomKey === 'living' && !state.unlinkLiving;
-    const z1 = isLivingLinked ? c3 : c1;
-    const z2 = isLivingLinked ? c3 : c2;
+    const roomSegColors = state.wallColors[roomKey].map((col) => hexToRgb(col.hex));
+    const flashSegId =
+      state.flashWall && state.flashWall.room === roomKey ? state.flashWall.segId : -1;
 
     const out = outputImageData.data;
     const len = basePixels.length;
 
-    for (let i = 0; i < len; i += 4) {
+    for (let i = 0, p = 0; i < len; i += 4, p++) {
       const mr = maskPixels[i];
       const mg = maskPixels[i + 1];
       const mb = maskPixels[i + 2];
@@ -596,10 +722,15 @@
         continue;
       }
 
+      const c0 = roomSegColors[m0Seg[p]];
+      const c1 = roomSegColors[m1Seg[p]];
+      const c2 = roomSegColors[m2Seg[p]];
+      const c3 = roomSegColors[m3Seg[p]];
+
       const invTotal = 1.0 / totalM;
-      const tr = (m0 * c0.r + m1 * z1.r + m2 * z2.r + m3 * c3.r) * invTotal;
-      const tg = (m0 * c0.g + m1 * z1.g + m2 * z2.g + m3 * c3.g) * invTotal;
-      const tb = (m0 * c0.b + m1 * z1.b + m2 * z2.b + m3 * c3.b) * invTotal;
+      const tr = (m0 * c0.r + m1 * c1.r + m2 * c2.r + m3 * c3.r) * invTotal;
+      const tg = (m0 * c0.g + m1 * c1.g + m2 * c2.g + m3 * c3.g) * invTotal;
+      const tb = (m0 * c0.b + m1 * c1.b + m2 * c2.b + m3 * c3.b) * invTotal;
 
       const illum = basePixels[i] / 195.0;
       let pr, pg, pb;
@@ -612,6 +743,12 @@
         pr = tr * illum + spec;
         pg = tg * illum + spec * 0.96;
         pb = tb * illum + spec * 0.88;
+      }
+
+      if (flashSegId !== -1 && topSeg[p] === flashSegId) {
+        pr = pr * 0.82 + 255 * 0.18;
+        pg = pg * 0.82 + 255 * 0.18;
+        pb = pb * 0.82 + 255 * 0.18;
       }
 
       if (totalM >= 254) {
@@ -635,9 +772,6 @@
   function renderActiveRoom() {
     const singleWrap = document.getElementById('single-canvas-wrap');
     const multiWrap = document.getElementById('multi-canvas-wrap');
-    const livingUnlinkRow = document.getElementById('living-unlink-row');
-
-    livingUnlinkRow.hidden = state.activeRoom !== 'living';
 
     if (state.activeRoom === 'all') {
       singleWrap.hidden = true;
@@ -652,6 +786,63 @@
       renderRoomToCanvas(state.activeRoom, document.getElementById('room-canvas'));
     }
     updateRecipeAndZoneUI();
+  }
+
+  function getActiveTargetColor() {
+    if (state.targetMode === 'wall' && state.activeWall) {
+      const { room, segId } = state.activeWall;
+      if (state.wallColors[room] && state.wallColors[room][segId]) {
+        return state.wallColors[room][segId];
+      }
+    }
+    return state.zoneColors[state.activeZone];
+  }
+
+  function renderRoomWallButtons() {
+    const grid = document.getElementById('room-walls-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const roomKey = state.activeRoom === 'all' ? 'hallway' : state.activeRoom;
+    const segments = ROOM_WALL_SEGMENTS[roomKey] || [];
+    const colors = state.wallColors[roomKey] || [];
+
+    segments.forEach((seg, idx) => {
+      const col = colors[idx] || state.zoneColors[seg.defaultZone];
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      const isSelected =
+        state.targetMode === 'wall' &&
+        state.activeWall.room === roomKey &&
+        state.activeWall.segId === idx;
+      btn.className = 'wall-seg-btn' + (isSelected ? ' active' : '');
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', String(isSelected));
+
+      const dot = document.createElement('span');
+      dot.className = 'wall-seg-dot';
+      dot.style.backgroundColor = col.hex;
+
+      const textWrap = document.createElement('span');
+      textWrap.className = 'wall-seg-text';
+
+      const strong = document.createElement('strong');
+      strong.textContent = seg.name;
+
+      const small = document.createElement('small');
+      small.textContent = `${col.name} (${col.hex})`;
+
+      textWrap.appendChild(strong);
+      textWrap.appendChild(small);
+      btn.appendChild(dot);
+      btn.appendChild(textWrap);
+
+      btn.addEventListener('click', () => {
+        selectIndividualWall(roomKey, idx, false);
+      });
+
+      grid.appendChild(btn);
+    });
   }
 
   function updateRecipeAndZoneUI() {
@@ -670,31 +861,56 @@
       if (rCode) rCode.textContent = `${col.code ? col.code + ' ' : ''}(${col.hex})`;
     }
 
+    const badge = document.getElementById('active-target-badge');
+    if (badge) {
+      if (state.targetMode === 'wall') {
+        const seg = ROOM_WALL_SEGMENTS[state.activeWall.room][state.activeWall.segId];
+        badge.textContent = `Editing Wall: ${seg ? seg.name : 'Selected Wall'}`;
+      } else {
+        badge.textContent = `Editing Zone: ${ZONE_NAMES[state.activeZone]}`;
+      }
+    }
+
     document.querySelectorAll('.zone-btn').forEach((btn) => {
       const z = Number(btn.dataset.zone);
-      const isActive = z === state.activeZone;
+      const isActive = state.targetMode === 'zone' && z === state.activeZone;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-checked', String(isActive));
     });
 
     document.querySelectorAll('.recipe-chip').forEach((chip) => {
       const z = Number(chip.dataset.selectZone);
-      chip.classList.toggle('active', z === state.activeZone);
+      chip.classList.toggle('active', state.targetMode === 'zone' && z === state.activeZone);
     });
 
-    const activeHex = state.zoneColors[state.activeZone].hex.toUpperCase();
+    renderRoomWallButtons();
+
+    const activeCol = getActiveTargetColor();
+    const activeHex = activeCol.hex.toUpperCase();
     document.querySelectorAll('.swatch-card').forEach((card) => {
       card.classList.toggle('selected', card.dataset.hex === activeHex);
     });
   }
 
   function applyColorToActiveZone(colorObj, syncWheel = true) {
-    const z = state.activeZone;
-    state.zoneColors[z] = { ...colorObj };
+    state.lastPickedColor = { ...colorObj };
 
-    if (state.linkStairLayers && (z === 1 || z === 2)) {
-      state.zoneColors[1] = { ...colorObj };
-      state.zoneColors[2] = { ...colorObj };
+    if (state.targetMode === 'wall' && state.activeWall) {
+      // Independent per-wall update: ONLY changes the clicked wall!
+      const { room, segId } = state.activeWall;
+      state.wallColors[room][segId] = { ...colorObj };
+    } else {
+      // Whole-zone update
+      const z = state.activeZone;
+      state.zoneColors[z] = { ...colorObj };
+      syncZoneToWalls(z, colorObj);
+
+      if (state.linkStairLayers && (z === 1 || z === 2)) {
+        state.zoneColors[1] = { ...colorObj };
+        state.zoneColors[2] = { ...colorObj };
+        syncZoneToWalls(1, colorObj);
+        syncZoneToWalls(2, colorObj);
+      }
     }
 
     if (syncWheel) {
@@ -708,7 +924,31 @@
     renderActiveRoom();
   }
 
+  let flashTimer = null;
+  function selectIndividualWall(room, segId, fromCanvasClick = false) {
+    state.targetMode = 'wall';
+    state.activeWall = { room, segId };
+
+    if (fromCanvasClick && state.brushOnClick && state.lastPickedColor) {
+      state.wallColors[room][segId] = { ...state.lastPickedColor };
+    }
+
+    const activeCol = state.wallColors[room][segId];
+    const rgb = hexToRgb(activeCol.hex);
+    state.wheelHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    updateWheelUI();
+
+    state.flashWall = { room, segId };
+    renderActiveRoom();
+    if (flashTimer) clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => {
+      state.flashWall = null;
+      renderActiveRoom();
+    }, 260);
+  }
+
   function setActiveZone(z) {
+    state.targetMode = 'zone';
     state.activeZone = z;
     const activeCol = state.zoneColors[z];
     const rgb = hexToRgb(activeCol.hex);
@@ -789,6 +1029,7 @@
 
       btn.addEventListener('click', () => {
         state.zoneColors = resolvedZones.map((sw) => ({ ...sw }));
+        syncAllWallsFromZones();
         setActiveZone(state.activeZone);
         renderActiveRoom();
       });
@@ -1266,7 +1507,7 @@
   });
 
   document.getElementById('btn-save-custom').addEventListener('click', () => {
-    const current = state.zoneColors[state.activeZone];
+    const current = getActiveTargetColor();
     const hexUpper = current.hex.toUpperCase();
     const exists = [...DEFAULT_FAVOURITES, ...state.customFavourites].some(
       (s) => s.hex.toUpperCase() === hexUpper
@@ -1290,48 +1531,34 @@
     }
   });
 
-  // Direct Canvas Click & Hover to Select Wall Zone
+  // Direct Canvas Click & Hover to Select or Paint Any Individual Wall Segment
   const roomCanvas = document.getElementById('room-canvas');
   const hoverPill = document.getElementById('hover-zone-pill');
 
-  function getZoneAtCanvasEvent(e) {
+  function getWallSegmentAtCanvasEvent(e) {
+    if (state.activeRoom === 'all') return null;
     const asset = state.roomAssets[state.activeRoom];
-    if (!asset) return null;
+    if (!asset || !asset.topSeg) return null;
 
     const rect = roomCanvas.getBoundingClientRect();
     const x = Math.floor(((e.clientX - rect.left) / rect.width) * asset.width);
     const y = Math.floor(((e.clientY - rect.top) / rect.height) * asset.height);
     if (x < 0 || x >= asset.width || y < 0 || y >= asset.height) return null;
 
-    const idx = (y * asset.width + x) * 4;
-    const mr = asset.maskPixels[idx];
-    const mg = asset.maskPixels[idx + 1];
-    const mb = asset.maskPixels[idx + 2];
-
-    const m3 = mr < mb ? mr : mb;
-    const m0 = mr - m3;
-    const m1 = mg;
-    const m2 = mb - m3;
-
-    const maxM = Math.max(m0, m1, m2, m3);
-    if (maxM < 40) return null;
-
-    if (state.activeRoom === 'living' && !state.unlinkLiving) {
-      return 3;
-    }
-    if (maxM === m3) return 3;
-    if (maxM === m2) return 2;
-    if (maxM === m1) return 1;
-    return 0;
+    const segId = asset.topSeg[y * asset.width + x];
+    return segId === 255 ? null : segId;
   }
 
   roomCanvas.addEventListener('mousemove', (e) => {
-    const z = getZoneAtCanvasEvent(e);
-    if (z === null) {
+    const segId = getWallSegmentAtCanvasEvent(e);
+    if (segId === null) {
       hoverPill.hidden = true;
     } else {
+      const seg = ROOM_WALL_SEGMENTS[state.activeRoom][segId];
       hoverPill.hidden = false;
-      hoverPill.textContent = `Click to select: ${ZONE_NAMES[z]}`;
+      hoverPill.textContent = state.brushOnClick
+        ? `Click to paint: ${seg.name} (${state.lastPickedColor.name})`
+        : `Click to select wall: ${seg.name}`;
     }
   });
 
@@ -1340,9 +1567,9 @@
   });
 
   roomCanvas.addEventListener('click', (e) => {
-    const z = getZoneAtCanvasEvent(e);
-    if (z !== null) {
-      setActiveZone(z);
+    const segId = getWallSegmentAtCanvasEvent(e);
+    if (segId !== null) {
+      selectIndividualWall(state.activeRoom, segId, true);
     }
   });
 
@@ -1354,6 +1581,9 @@
         t.classList.toggle('active', active);
         t.setAttribute('aria-selected', String(active));
       });
+      if (state.targetMode === 'wall' && state.activeRoom !== 'all') {
+        state.activeWall = { room: state.activeRoom, segId: 0 };
+      }
       renderActiveRoom();
     });
   });
@@ -1386,18 +1616,26 @@
 
   document.getElementById('chk-link-stairs').addEventListener('change', (e) => {
     state.linkStairLayers = e.target.checked;
-    if (state.linkStairLayers) {
+    if (state.linkStairLayers && state.targetMode === 'zone') {
       const source = state.activeZone === 2 ? state.zoneColors[2] : state.zoneColors[1];
       state.zoneColors[1] = { ...source };
       state.zoneColors[2] = { ...source };
+      syncZoneToWalls(1, source);
+      syncZoneToWalls(2, source);
       renderActiveRoom();
     }
   });
 
-  document.getElementById('chk-unlink-living').addEventListener('change', (e) => {
-    state.unlinkLiving = e.target.checked;
-    renderActiveRoom();
-  });
+  const brushBtn = document.getElementById('btn-brush-mode');
+  if (brushBtn) {
+    brushBtn.addEventListener('click', () => {
+      state.brushOnClick = !state.brushOnClick;
+      brushBtn.setAttribute('aria-pressed', String(state.brushOnClick));
+      brushBtn.textContent = state.brushOnClick
+        ? 'Paint on Click (Brush): ON'
+        : 'Paint on Click (Brush): OFF';
+    });
+  }
 
   const compareBtn = document.getElementById('btn-compare-orig');
   compareBtn.addEventListener('click', () => {
@@ -1416,6 +1654,7 @@
       { ...DEFAULT_FAVOURITES[0] },
       { ...DEFAULT_FAVOURITES[1] }
     ];
+    syncAllWallsFromZones();
     state.showOriginal = false;
     compareBtn.setAttribute('aria-pressed', 'false');
     compareBtn.textContent = 'Show Original Unpainted';
