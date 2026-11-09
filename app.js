@@ -470,7 +470,8 @@
       { id: 1, name: 'Stair Layer 1 (Mirror Wall)', defaultZone: 1 },
       { id: 2, name: 'Stair Layer 2 (Middle Stair)', defaultZone: 2 },
       { id: 3, name: 'Left Front Door Wall', defaultZone: 3 },
-      { id: 4, name: 'Far-Right Hallway Wall', defaultZone: 3 }
+      { id: 4, name: 'Upper Stair Bulkhead', defaultZone: 0 },
+      { id: 5, name: 'Far-Right Hallway Wall', defaultZone: 3 }
     ],
     living: [
       { id: 0, name: 'Left Skyline Wall', defaultZone: 3 },
@@ -603,7 +604,7 @@
           s0 = 0;
           s1 = 1;
           s2 = 2;
-          s3 = x < 450 ? 3 : 4;
+          s3 = x < 450 ? 3 : y < 400 ? 4 : 5;
         } else if (room === 'living') {
           s0 = 1;
           s1 = 0;
@@ -642,9 +643,9 @@
       await Promise.all(
         rooms.map(async (room) => {
           const [baseImg, maskImg, origImg] = await Promise.all([
-            loadImage(`assets/${room}_base.jpg?v=5`),
-            loadImage(`assets/${room}_mask.png?v=5`),
-            loadImage(`assets/${room}_orig.jpg?v=5`)
+            loadImage(`assets/${room}_base.jpg?v=6`),
+            loadImage(`assets/${room}_mask.png?v=6`),
+            loadImage(`assets/${room}_orig.jpg?v=6`)
           ]);
           const baseData = extractImageData(baseImg);
           const maskData = extractImageData(maskImg);
