@@ -549,8 +549,15 @@ body {
   gap: 6px;
 }
 
+.wheel-pin-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 12px;
+}
+
 .wheel-pin-toggle {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   min-height: 36px;
 }
 
@@ -561,7 +568,7 @@ body {
   margin: 0 auto;
 }
 
-/* BeautiTone Converter Boxes */
+/* Behr & BeautiTone Converter Boxes */
 .bt-converter-box {
   background-color: var(--bg-subtle);
   border: 1.5px solid var(--border-color);
@@ -579,6 +586,31 @@ body {
   align-items: baseline;
   gap: 6px;
   font-size: 0.875rem;
+}
+
+.brand-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.brand-pill {
+  min-height: 38px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.brand-pill.active {
+  background-color: var(--accent-primary);
+  color: var(--accent-text);
+  border-color: var(--accent-primary);
 }
 
 .bt-closest-grid {
@@ -693,6 +725,7 @@ body {
 .bt-result-meta {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .bt-result-title {
@@ -703,6 +736,11 @@ body {
 .bt-result-specs {
   font-family: 'JetBrains Mono', Consolas, monospace;
   font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.bt-cross-match {
+  font-size: 0.76rem;
   color: var(--text-secondary);
 }
 

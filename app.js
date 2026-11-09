@@ -192,6 +192,87 @@
     { name: 'Midnight Flora', code: 'TR25-3-3', hex: '#43293E', family: 'Blue & Accent' }
   ];
 
+  // Official Behr (Home Depot) Paint Catalog for Two-Way Conversion & Color Wheel Pins
+  const BEHR_CATALOG = [
+    // Pale & Muted Greens / Sages
+    { name: 'Positive Energy', code: 'S370-1', hex: '#E1E2CF', family: 'Green & Sage' },
+    { name: 'Fresh Dew', code: 'M370-1', hex: '#F0F4E5', family: 'Green & Sage' },
+    { name: 'Cabbage Leaf', code: 'M370-2', hex: '#DFE8D0', family: 'Green & Sage' },
+    { name: 'Spice Garden', code: 'M370-3', hex: '#C9D6B4', family: 'Green & Sage' },
+    { name: 'Feng Shui', code: 'S370-2', hex: '#D7D9C2', family: 'Green & Sage' },
+    { name: 'Sage Brush', code: 'S370-3', hex: '#BFC1A2', family: 'Green & Sage' },
+    { name: 'Moss Mist', code: 'S380-1', hex: '#DFE1D2', family: 'Green & Sage' },
+    { name: 'Morning Zen', code: 'S380-2', hex: '#CBCDB9', family: 'Green & Sage' },
+    { name: 'Urban Nature', code: 'S380-3', hex: '#BCBFA8', family: 'Green & Sage' },
+    { name: 'Sounds Of Nature', code: 'S390-1', hex: '#DFE5D7', family: 'Green & Sage' },
+    { name: 'Spring Valley', code: 'S390-2', hex: '#CED7C5', family: 'Green & Sage' },
+    { name: 'Creamy Spinach', code: 'S390-3', hex: '#B2BFA6', family: 'Green & Sage' },
+    { name: 'Light Mist', code: 'N390-1', hex: '#DCE1D5', family: 'Green & Sage' },
+    { name: 'Flora', code: 'N390-2', hex: '#CED5C7', family: 'Green & Sage' },
+    { name: 'Jojoba', code: 'N390-3', hex: '#B0B9A6', family: 'Green & Sage' },
+    { name: 'Environmental', code: 'PPU11-09', hex: '#B1B5A0', family: 'Green & Sage' },
+    { name: 'Jade Mist', code: 'M410-1', hex: '#D6E9D7', family: 'Green & Sage' },
+    { name: 'Wishful Green', code: 'M410-2', hex: '#C8E2CC', family: 'Green & Sage' },
+    { name: 'Enchanted Meadow', code: 'M410-3', hex: '#B1D4B7', family: 'Green & Sage' },
+    { name: 'Garden Swing', code: 'M410-4', hex: '#8CBD97', family: 'Green & Sage' },
+    // Mid & Deep Olives / Forest Greens
+    { name: 'Grounded', code: 'T27-01', hex: '#565344', family: 'Olive & Forest' },
+    { name: 'Rejuvenation', code: 'S370-4', hex: '#A4A783', family: 'Olive & Forest' },
+    { name: 'Pesto Paste', code: 'S370-5', hex: '#898C66', family: 'Olive & Forest' },
+    { name: 'Seaweed Salad', code: 'S370-6', hex: '#7D7B55', family: 'Olive & Forest' },
+    { name: 'Outdoor Oasis', code: 'S370-7', hex: '#6E6F4D', family: 'Olive & Forest' },
+    { name: 'Bay Water', code: 'S380-4', hex: '#AAAD94', family: 'Olive & Forest' },
+    { name: 'Milkweed Pod', code: 'S380-5', hex: '#95987F', family: 'Olive & Forest' },
+    { name: 'Ecological', code: 'S380-6', hex: '#808367', family: 'Olive & Forest' },
+    { name: 'Global Green', code: 'S380-7', hex: '#696E51', family: 'Olive & Forest' },
+    { name: 'Roof Top Garden', code: 'S390-4', hex: '#9EAD93', family: 'Olive & Forest' },
+    { name: 'Laurel Tree', code: 'S390-5', hex: '#889779', family: 'Olive & Forest' },
+    { name: 'Cliffside Park', code: 'S390-6', hex: '#6F8165', family: 'Olive & Forest' },
+    { name: 'Trailing Vine', code: 'S390-7', hex: '#5A6952', family: 'Olive & Forest' },
+    { name: 'Bitter Sage', code: 'N390-4', hex: '#97A18D', family: 'Olive & Forest' },
+    { name: 'Eucalyptus Wreath', code: 'N390-5', hex: '#88927E', family: 'Olive & Forest' },
+    { name: 'Laurel Garland', code: 'N390-6', hex: '#68705C', family: 'Olive & Forest' },
+    { name: 'Cypress Vine', code: 'N390-7', hex: '#5E6552', family: 'Olive & Forest' },
+    { name: 'Green Bank', code: 'M410-5', hex: '#79B088', family: 'Olive & Forest' },
+    { name: 'Turtle Creek', code: 'M410-6', hex: '#65926D', family: 'Olive & Forest' },
+    { name: 'Perennial Green', code: 'M410-7', hex: '#47694F', family: 'Olive & Forest' },
+    { name: 'Back To Nature', code: 'S340-4', hex: '#BDB98F', family: 'Olive & Forest' },
+    { name: 'Bonsai Trunk', code: 'N380-6', hex: '#6C6D62', family: 'Olive & Forest' },
+    { name: 'Black Bamboo', code: 'N380-7', hex: '#5B5D53', family: 'Olive & Forest' },
+    // Creams, Yellows & Warm Whites
+    { name: 'Frittata', code: 'M290-2', hex: '#FEEBC8', family: 'Cream & Yellow' },
+    { name: 'Thickened Cream', code: 'M290-1', hex: '#FCF3DD', family: 'Cream & Yellow' },
+    { name: 'Corn Stalk', code: 'M290-3', hex: '#FCDBA6', family: 'Cream & Yellow' },
+    { name: 'Vanilla Paste', code: 'S290-1', hex: '#F3E7D3', family: 'Cream & Yellow' },
+    { name: 'White Bean Hummus', code: 'S290-2', hex: '#E8D0B2', family: 'Cream & Yellow' },
+    { name: 'Slender Reed', code: 'S290-3', hex: '#DEC29F', family: 'Cream & Yellow' },
+    { name: 'Blank Canvas', code: 'DC-003', hex: '#F1EDE1', family: 'Cream & Yellow' },
+    { name: 'Swiss Coffee', code: '12', hex: '#F1EDE0', family: 'Cream & Yellow' },
+    { name: 'Roadster White', code: 'N370-1', hex: '#E1E0D7', family: 'Cream & Yellow' },
+    // Stone, Greige, Taupe & Earth Neutrals
+    { name: 'Eon', code: 'N370-2', hex: '#D4D3C9', family: 'Stone & Neutral' },
+    { name: 'Light Year', code: 'N370-3', hex: '#BFBFB4', family: 'Stone & Neutral' },
+    { name: 'Confederate', code: 'N370-4', hex: '#A7A699', family: 'Stone & Neutral' },
+    { name: 'Incognito', code: 'N370-5', hex: '#8E8E82', family: 'Stone & Neutral' },
+    { name: 'Mortar', code: 'N380-1', hex: '#D6D7CF', family: 'Stone & Neutral' },
+    { name: 'Heath Gray', code: 'N380-2', hex: '#C9CBC2', family: 'Stone & Neutral' },
+    { name: 'Weathered Moss', code: 'N380-3', hex: '#BABBB3', family: 'Stone & Neutral' },
+    { name: 'Strong Winds', code: 'N380-4', hex: '#A3A59B', family: 'Stone & Neutral' },
+    { name: 'Naturalist Gray', code: 'N380-5', hex: '#8B8C83', family: 'Stone & Neutral' },
+    { name: 'Sage Gray', code: '710F-4', hex: '#9EA49D', family: 'Stone & Neutral' },
+    { name: 'Seagull Gray', code: 'N360-1', hex: '#D9D9D2', family: 'Stone & Neutral' },
+    { name: 'Silver Marlin', code: 'N360-2', hex: '#C8C8C0', family: 'Stone & Neutral' },
+    { name: 'Still Gray', code: 'N360-3', hex: '#ABA9A0', family: 'Stone & Neutral' },
+    { name: 'Battleship Gray', code: 'N360-4', hex: '#98968D', family: 'Stone & Neutral' },
+    { name: 'Mossy Oak', code: 'N360-5', hex: '#848178', family: 'Stone & Neutral' },
+    { name: 'Patio Stone', code: 'N360-6', hex: '#6B655B', family: 'Stone & Neutral' },
+    { name: 'Potting Soil', code: 'N360-7', hex: '#595147', family: 'Stone & Neutral' },
+    // Blues & Slates
+    { name: 'Mozart', code: 'PPU15-02', hex: '#485480', family: 'Blue & Accent' },
+    { name: 'Denim Light', code: 'PPU14-15', hex: '#B8CAD5', family: 'Blue & Accent' },
+    { name: 'Hidden Gem', code: 'N430-6A', hex: '#596D69', family: 'Blue & Accent' }
+  ];
+
   const WHOLE_ROOM_COMBOS = [
     {
       label: 'Winner Trio: Frittata + Grounded + Positive Energy',
@@ -343,24 +424,31 @@
     return Math.sqrt(dL * dL + da * da + db * db);
   }
 
-  // Enrich BEAUTITONE_CATALOG with precomputed RGB, LRV, HSL, and Lab
-  BEAUTITONE_CATALOG.forEach((item) => {
-    item.hex = item.hex.toUpperCase();
-    item.rgb = hexToRgb(item.hex);
-    item.lrv = computeLRV(item.rgb.r, item.rgb.g, item.rgb.b);
-    item.hsl = rgbToHsl(item.rgb.r, item.rgb.g, item.rgb.b);
-    item.lab = rgbToLab(item.rgb.r, item.rgb.g, item.rgb.b);
-    item.brand = 'BeautiTone';
-    item.id = 'bt-' + item.code.toLowerCase();
-  });
+  // Enrich BEAUTITONE_CATALOG and BEHR_CATALOG with precomputed RGB, LRV, HSL, and Lab
+  function enrichCatalog(catalog, brandName, prefix) {
+    catalog.forEach((item) => {
+      item.hex = item.hex.toUpperCase();
+      item.rgb = hexToRgb(item.hex);
+      item.lrv = computeLRV(item.rgb.r, item.rgb.g, item.rgb.b);
+      item.hsl = rgbToHsl(item.rgb.r, item.rgb.g, item.rgb.b);
+      item.lab = rgbToLab(item.rgb.r, item.rgb.g, item.rgb.b);
+      item.brand = brandName;
+      item.id = prefix + '-' + item.code.toLowerCase();
+    });
+  }
 
-  function findClosestBeautiToneColors(hex, count = 3) {
+  enrichCatalog(BEAUTITONE_CATALOG, 'BeautiTone', 'bt');
+  enrichCatalog(BEHR_CATALOG, 'Behr', 'behr');
+
+  const ALL_BRAND_CATALOG = [...BEHR_CATALOG, ...BEAUTITONE_CATALOG];
+
+  function findClosestCatalogColors(hex, catalog, count = 3) {
     const rgb = hexToRgb(hex);
     const targetLab = rgbToLab(rgb.r, rgb.g, rgb.b);
-    const scored = BEAUTITONE_CATALOG.map((bt) => {
-      const dist = deltaE(targetLab, bt.lab);
+    const scored = catalog.map((item) => {
+      const dist = deltaE(targetLab, item.lab);
       const similarity = Math.max(0, Math.min(100, Math.round(100 - dist * 1.6)));
-      return { bt, dist, similarity };
+      return { item, dist, similarity };
     });
     scored.sort((a, b) => a.dist - b.dist);
     return scored.slice(0, count);
@@ -373,7 +461,9 @@
     unlinkLiving: false,
     showOriginal: false,
     showBtPins: true,
-    selectedBtLookup: BEAUTITONE_CATALOG[0],
+    showBehrPins: true,
+    brandFilter: 'all',
+    selectedBtLookup: BEHR_CATALOG[0],
     customFavourites: [],
     zoneColors: [
       { ...TESTED_SWATCHES[0] },   // Zone 0: Frittata
@@ -611,7 +701,7 @@
       state.wheelHSL = rgbToHsl(rgb.r, rgb.g, rgb.b);
       updateWheelUI();
     } else {
-      renderClosestBeautiToneMatches(colorObj.hex);
+      renderClosestBrandMatches(colorObj.hex);
     }
 
     renderActiveRoom();
@@ -706,7 +796,7 @@
     });
   }
 
-  // Interactive 2D Color Wheel + BeautiTone Sample Dots
+  // Interactive 2D Color Wheel + BeautiTone & Behr Sample Markers
   const wheelCanvas = document.getElementById('color-wheel-canvas');
   const wheelCtx = wheelCanvas.getContext('2d');
   const wheelCursor = document.getElementById('wheel-cursor');
@@ -745,7 +835,7 @@
     }
     wheelCtx.putImageData(imgData, 0, 0);
 
-    // Plot BeautiTone sample dots on the wheel if enabled
+    // Plot BeautiTone sample dots (circles) on the wheel if enabled
     if (state.showBtPins) {
       BEAUTITONE_CATALOG.forEach((bt) => {
         const rad = (bt.hsl.h * Math.PI) / 180;
@@ -763,16 +853,34 @@
         wheelCtx.stroke();
       });
     }
+
+    // Plot Behr sample markers (squares) on the wheel if enabled
+    if (state.showBehrPins) {
+      BEHR_CATALOG.forEach((behr) => {
+        const rad = (behr.hsl.h * Math.PI) / 180;
+        const dist = (behr.hsl.s / 100) * (radius - 6);
+        const px = radius + Math.cos(rad) * dist;
+        const py = radius + Math.sin(rad) * dist;
+
+        const isNearLightness = Math.abs(behr.hsl.l - lightness) <= 18;
+        const half = isNearLightness ? 4.0 : 2.5;
+        wheelCtx.fillStyle = behr.hex;
+        wheelCtx.fillRect(px - half, py - half, half * 2, half * 2);
+        wheelCtx.lineWidth = isNearLightness ? 1.5 : 1;
+        wheelCtx.strokeStyle = isNearLightness ? '#1B1A17' : 'rgba(27, 26, 23, 0.45)';
+        wheelCtx.strokeRect(px - half, py - half, half * 2, half * 2);
+      });
+    }
   }
 
-  // Render Top 3 Closest BeautiTone Matches (Color -> BeautiTone)
-  function renderClosestBeautiToneMatches(hex) {
-    const container = document.getElementById('bt-closest-list');
+  // Render Top 3 Closest Matches for a Given Brand Catalog
+  function populateMatchGrid(containerId, hex, catalog) {
+    const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
 
-    const closest = findClosestBeautiToneColors(hex, 3);
-    closest.forEach(({ bt, dist, similarity }) => {
+    const closest = findClosestCatalogColors(hex, catalog, 3);
+    closest.forEach(({ item, dist, similarity }) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'bt-match-card' + (dist < 1.5 ? ' exact' : '');
@@ -783,7 +891,7 @@
 
       const sw = document.createElement('span');
       sw.className = 'bt-match-swatch';
-      sw.style.backgroundColor = bt.hex;
+      sw.style.backgroundColor = item.hex;
 
       const badge = document.createElement('span');
       badge.className = 'bt-match-badge';
@@ -794,94 +902,118 @@
 
       const nameEl = document.createElement('span');
       nameEl.className = 'bt-match-name';
-      nameEl.textContent = bt.name;
+      nameEl.textContent = item.name;
 
       const codeEl = document.createElement('span');
       codeEl.className = 'bt-match-code';
-      codeEl.textContent = `${bt.code} | ${bt.hex}`;
+      codeEl.textContent = `${item.code} | ${item.hex}`;
 
       btn.appendChild(topRow);
       btn.appendChild(nameEl);
       btn.appendChild(codeEl);
 
       btn.addEventListener('click', () => {
-        state.selectedBtLookup = bt;
-        renderBtLookupResult(bt);
-        applyColorToActiveZone(bt, true);
+        state.selectedBtLookup = item;
+        renderBtLookupResult(item);
+        applyColorToActiveZone(item, true);
       });
 
       container.appendChild(btn);
     });
   }
 
-  // Direction B: BeautiTone Catalog Lookup -> HEX Code & Apply
+  function renderClosestBrandMatches(hex) {
+    populateMatchGrid('bt-closest-list', hex, BEAUTITONE_CATALOG);
+    populateMatchGrid('behr-closest-list', hex, BEHR_CATALOG);
+  }
+
+  // Direction B: Behr & BeautiTone Catalog Lookup -> HEX Code & Cross-Brand Match
   const inputBtSearch = document.getElementById('input-bt-search');
   const selectBtCatalog = document.getElementById('select-bt-catalog');
   const btConversionResult = document.getElementById('bt-conversion-result');
 
   function populateBtDropdown(filterQuery = '') {
     const q = filterQuery.trim().toLowerCase();
-    const filtered = BEAUTITONE_CATALOG.filter(
-      (bt) =>
+    const basePool =
+      state.brandFilter === 'Behr'
+        ? BEHR_CATALOG
+        : state.brandFilter === 'BeautiTone'
+          ? BEAUTITONE_CATALOG
+          : ALL_BRAND_CATALOG;
+
+    const filtered = basePool.filter(
+      (item) =>
         !q ||
-        bt.name.toLowerCase().includes(q) ||
-        bt.code.toLowerCase().includes(q) ||
-        bt.hex.toLowerCase().includes(q) ||
-        bt.family.toLowerCase().includes(q)
+        item.name.toLowerCase().includes(q) ||
+        item.code.toLowerCase().includes(q) ||
+        item.hex.toLowerCase().includes(q) ||
+        item.brand.toLowerCase().includes(q) ||
+        item.family.toLowerCase().includes(q)
     );
 
     selectBtCatalog.innerHTML = '';
     if (filtered.length === 0) {
       const opt = document.createElement('option');
       opt.value = '';
-      opt.textContent = 'No matching BeautiTone color found';
+      opt.textContent = 'No matching Behr or BeautiTone color found';
       selectBtCatalog.appendChild(opt);
       return;
     }
 
-    filtered.forEach((bt) => {
+    filtered.forEach((item) => {
       const opt = document.createElement('option');
-      opt.value = bt.code;
-      opt.textContent = `${bt.name} (${bt.code}) -> ${bt.hex}`;
-      if (state.selectedBtLookup && state.selectedBtLookup.code === bt.code) {
+      opt.value = item.id;
+      opt.textContent = `[${item.brand}] ${item.name} (${item.code}) -> ${item.hex}`;
+      if (state.selectedBtLookup && state.selectedBtLookup.id === item.id) {
         opt.selected = true;
       }
       selectBtCatalog.appendChild(opt);
     });
 
-    if (!filtered.some((b) => state.selectedBtLookup && b.code === state.selectedBtLookup.code)) {
+    if (!filtered.some((b) => state.selectedBtLookup && b.id === state.selectedBtLookup.id)) {
       state.selectedBtLookup = filtered[0];
     }
     renderBtLookupResult(state.selectedBtLookup);
   }
 
-  function renderBtLookupResult(bt) {
-    if (!bt || !btConversionResult) return;
+  function renderBtLookupResult(item) {
+    if (!item || !btConversionResult) return;
     btConversionResult.innerHTML = '';
 
     document.getElementById('bt-converted-readout').textContent =
-      `${bt.code} = ${bt.hex} (LRV ${bt.lrv})`;
+      `${item.brand} ${item.code} = ${item.hex} (LRV ${item.lrv})`;
 
     const left = document.createElement('div');
     left.className = 'bt-result-left';
 
     const sw = document.createElement('span');
     sw.className = 'bt-result-swatch';
-    sw.style.backgroundColor = bt.hex;
+    sw.style.backgroundColor = item.hex;
 
     const meta = document.createElement('div');
     meta.className = 'bt-result-meta';
 
     const title = document.createElement('span');
     title.className = 'bt-result-title';
-    title.textContent = `BeautiTone ${bt.name} (${bt.code})`;
+    title.textContent = `${item.brand} ${item.name} (${item.code})`;
 
     const specs = document.createElement('span');
     specs.className = 'bt-result-specs';
-    specs.textContent = `HEX: ${bt.hex} | RGB: (${bt.rgb.r}, ${bt.rgb.g}, ${bt.rgb.b}) | LRV: ${bt.lrv}`;
+    specs.textContent = `HEX: ${item.hex} | RGB: (${item.rgb.r}, ${item.rgb.g}, ${item.rgb.b}) | LRV: ${item.lrv}`;
+
+    // Cross-brand closest equivalent (Behr <-> BeautiTone)
+    const otherCatalog = item.brand === 'Behr' ? BEAUTITONE_CATALOG : BEHR_CATALOG;
+    const crossClosest = findClosestCatalogColors(item.hex, otherCatalog, 1)[0];
+    const crossSpan = document.createElement('span');
+    crossSpan.className = 'bt-cross-match';
+    if (crossClosest) {
+      const crossItem = crossClosest.item;
+      crossSpan.textContent = `Closest ${crossItem.brand} match: ${crossItem.name} (${crossItem.code}) ${crossItem.hex}`;
+    }
 
     meta.appendChild(title);
     meta.appendChild(specs);
+    if (crossClosest) meta.appendChild(crossSpan);
     left.appendChild(sw);
     left.appendChild(meta);
 
@@ -893,25 +1025,38 @@
     applyBtn.className = 'btn btn-primary btn-compact';
     applyBtn.textContent = 'Apply to Wall';
     applyBtn.addEventListener('click', () => {
-      applyColorToActiveZone(bt, true);
+      applyColorToActiveZone(item, true);
     });
 
     const copyBtn = document.createElement('button');
     copyBtn.type = 'button';
     copyBtn.className = 'btn btn-secondary btn-compact';
-    copyBtn.textContent = `Copy ${bt.hex}`;
+    copyBtn.textContent = `Copy ${item.hex}`;
     copyBtn.addEventListener('click', () => {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(bt.hex);
+        navigator.clipboard.writeText(item.hex);
         copyBtn.textContent = 'Copied!';
         setTimeout(() => {
-          copyBtn.textContent = `Copy ${bt.hex}`;
+          copyBtn.textContent = `Copy ${item.hex}`;
         }, 1400);
       }
     });
 
     actions.appendChild(applyBtn);
     actions.appendChild(copyBtn);
+
+    if (crossClosest) {
+      const swapBtn = document.createElement('button');
+      swapBtn.type = 'button';
+      swapBtn.className = 'btn btn-secondary btn-compact';
+      swapBtn.textContent = `Try ${crossClosest.item.brand} Match`;
+      swapBtn.addEventListener('click', () => {
+        state.selectedBtLookup = crossClosest.item;
+        renderBtLookupResult(crossClosest.item);
+        applyColorToActiveZone(crossClosest.item, true);
+      });
+      actions.appendChild(swapBtn);
+    }
 
     btConversionResult.appendChild(left);
     btConversionResult.appendChild(actions);
@@ -925,8 +1070,8 @@
 
   if (selectBtCatalog) {
     selectBtCatalog.addEventListener('change', () => {
-      const code = selectBtCatalog.value;
-      const found = BEAUTITONE_CATALOG.find((b) => b.code === code);
+      const id = selectBtCatalog.value;
+      const found = ALL_BRAND_CATALOG.find((b) => b.id === id);
       if (found) {
         state.selectedBtLookup = found;
         renderBtLookupResult(found);
@@ -935,10 +1080,28 @@
     });
   }
 
+  document.querySelectorAll('[data-brand-filter]').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      state.brandFilter = pill.dataset.brandFilter;
+      document.querySelectorAll('[data-brand-filter]').forEach((p) => {
+        p.classList.toggle('active', p === pill);
+      });
+      populateBtDropdown(inputBtSearch ? inputBtSearch.value : '');
+    });
+  });
+
   const chkBtPins = document.getElementById('chk-show-bt-pins');
   if (chkBtPins) {
     chkBtPins.addEventListener('change', (e) => {
       state.showBtPins = e.target.checked;
+      drawColorWheel(state.wheelHSL.l);
+    });
+  }
+
+  const chkBehrPins = document.getElementById('chk-show-behr-pins');
+  if (chkBehrPins) {
+    chkBehrPins.addEventListener('change', (e) => {
+      state.showBehrPins = e.target.checked;
       drawColorWheel(state.wheelHSL.l);
     });
   }
@@ -971,7 +1134,7 @@
     document.getElementById('saturation-val-label').textContent = `${s}%`;
     document.getElementById('wheel-live-readout').textContent = `${hex} | LRV ${lrv}`;
 
-    renderClosestBeautiToneMatches(hex);
+    renderClosestBrandMatches(hex);
   }
 
   function applyCurrentWheelColor() {
@@ -1000,24 +1163,29 @@
     const dx = clientX - (rect.left + radius);
     const dy = clientY - (rect.top + radius);
 
-    // If BeautiTone dots are visible and user clicked directly on a dot, snap to that BeautiTone sample!
-    if (allowPinSnap && state.showBtPins) {
+    // If sample markers are visible and user clicked directly on a marker, snap to that Behr or BeautiTone sample!
+    if (allowPinSnap && (state.showBtPins || state.showBehrPins)) {
       const scale = wheelCanvas.width / rect.width;
       const clickX = (clientX - rect.left) * scale;
       const clickY = (clientY - rect.top) * scale;
       const canvasRadius = wheelCanvas.width / 2;
 
+      const visiblePins = [
+        ...(state.showBtPins ? BEAUTITONE_CATALOG : []),
+        ...(state.showBehrPins ? BEHR_CATALOG : [])
+      ];
+
       let bestPin = null;
       let bestDist = 7.5;
-      BEAUTITONE_CATALOG.forEach((bt) => {
-        const rad = (bt.hsl.h * Math.PI) / 180;
-        const d = (bt.hsl.s / 100) * (canvasRadius - 6);
+      visiblePins.forEach((pin) => {
+        const rad = (pin.hsl.h * Math.PI) / 180;
+        const d = (pin.hsl.s / 100) * (canvasRadius - 6);
         const px = canvasRadius + Math.cos(rad) * d;
         const py = canvasRadius + Math.sin(rad) * d;
         const pinDist = Math.hypot(clickX - px, clickY - py);
         if (pinDist < bestDist) {
           bestDist = pinDist;
-          bestPin = bt;
+          bestPin = pin;
         }
       });
 

@@ -200,23 +200,29 @@
         </div>
       </section>
 
-      <!-- Step 3: Interactive Color Wheel & BeautiTone Two-Way Converter -->
+      <!-- Step 3: Interactive Color Wheel & Behr + BeautiTone Two-Way Converter -->
       <section class="control-card">
         <div class="card-header-row">
-          <h2 class="card-title">3. Color Wheel &amp; BeautiTone Converter</h2>
+          <h2 class="card-title">3. Color Wheel &amp; Behr / BeautiTone Converter</h2>
           <span class="card-hint" id="wheel-live-readout">#E1E2CF | LRV 75</span>
         </div>
 
         <div class="wheel-studio">
           <div class="wheel-canvas-col">
             <div class="wheel-canvas-wrap">
-              <canvas id="color-wheel-canvas" width="220" height="220" tabindex="0" aria-label="Hue and Saturation Color Wheel with BeautiTone sample markers. Use mouse, touch, or arrow keys to adjust hue and saturation."></canvas>
+              <canvas id="color-wheel-canvas" width="220" height="220" tabindex="0" aria-label="Hue and Saturation Color Wheel with Behr and BeautiTone sample markers. Use mouse, touch, or arrow keys to adjust hue and saturation."></canvas>
               <div id="wheel-cursor" class="wheel-cursor" aria-hidden="true"></div>
             </div>
-            <label class="checkbox-label wheel-pin-toggle">
-              <input type="checkbox" id="chk-show-bt-pins" checked />
-              <span>Show BeautiTone sample dots on wheel</span>
-            </label>
+            <div class="wheel-pin-toggles">
+              <label class="checkbox-label wheel-pin-toggle">
+                <input type="checkbox" id="chk-show-bt-pins" checked />
+                <span>BeautiTone dots (&bull;)</span>
+              </label>
+              <label class="checkbox-label wheel-pin-toggle">
+                <input type="checkbox" id="chk-show-behr-pins" checked />
+                <span>Behr squares (&#9632;)</span>
+              </label>
+            </div>
           </div>
 
           <div class="wheel-sliders">
@@ -252,10 +258,10 @@
           </div>
         </div>
 
-        <!-- Direction A: Current Wheel / HEX -> Closest BeautiTone Matches -->
+        <!-- Direction A1: Current Wheel / HEX -> Closest BeautiTone Matches -->
         <div class="bt-converter-box">
           <div class="bt-box-header">
-            <strong>Closest BeautiTone Matches to Current Color</strong>
+            <strong>Closest BeautiTone Matches (Home Hardware)</strong>
             <span class="card-hint">Click any match to snap &amp; get its code</span>
           </div>
           <div id="bt-closest-list" class="bt-closest-grid" role="list" aria-label="Closest BeautiTone Paint Matches">
@@ -263,21 +269,37 @@
           </div>
         </div>
 
-        <!-- Direction B: BeautiTone Code / Name -> HEX & Apply to Wall -->
+        <!-- Direction A2: Current Wheel / HEX -> Closest Behr Matches -->
         <div class="bt-converter-box">
           <div class="bt-box-header">
-            <label for="input-bt-search"><strong>BeautiTone &rightarrow; HEX Lookup (60 Official Colors)</strong></label>
-            <span class="card-hint" id="bt-converted-readout">Select or search a BeautiTone color</span>
+            <strong>Closest Behr Matches (Home Depot)</strong>
+            <span class="card-hint">Click any match to snap &amp; get its code</span>
+          </div>
+          <div id="behr-closest-list" class="bt-closest-grid" role="list" aria-label="Closest Behr Paint Matches">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- Direction B: Behr & BeautiTone Code / Name -> HEX & Cross-Brand Lookup -->
+        <div class="bt-converter-box">
+          <div class="bt-box-header">
+            <label for="input-bt-search"><strong>Behr &amp; BeautiTone &rightarrow; HEX Lookup (136 Official Colors)</strong></label>
+            <span class="card-hint" id="bt-converted-readout">Select or search any Behr or BeautiTone color</span>
+          </div>
+          <div class="brand-filter-pills" role="group" aria-label="Filter catalog by paint brand">
+            <button type="button" class="brand-pill active" data-brand-filter="all">All Brands (136)</button>
+            <button type="button" class="brand-pill" data-brand-filter="Behr">Behr (72)</button>
+            <button type="button" class="brand-pill" data-brand-filter="BeautiTone">BeautiTone (64)</button>
           </div>
           <div class="bt-lookup-controls">
             <input
               type="search"
               id="input-bt-search"
               class="bt-search-input"
-              placeholder="Search BeautiTone name, code (e.g. C45, D31, Pale Green Tea, Clover)..."
-              aria-label="Search BeautiTone color name or code"
+              placeholder="Search Behr or BeautiTone name, code (e.g. S370-1, T27-01, C45, Jojoba)..."
+              aria-label="Search Behr or BeautiTone color name or code"
             />
-            <select id="select-bt-catalog" class="bt-select" aria-label="Browse all BeautiTone paint colors">
+            <select id="select-bt-catalog" class="bt-select" aria-label="Browse Behr and BeautiTone paint colors">
               <!-- Populated by app.js -->
             </select>
           </div>
